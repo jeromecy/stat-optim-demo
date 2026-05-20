@@ -96,8 +96,8 @@ export default function Round4({ onComplete }: Round4Props) {
                 contentStyle={{ background: 'rgba(255,255,255,0.98)', border: '1px solid rgba(0,30,98,0.15)', borderRadius: 8 }}
                 labelStyle={{ color: '#001E62', fontWeight: 600, fontSize: 12 }}
                 itemStyle={{ color: '#374151', fontSize: 12 }}
-                formatter={(v: number, _: string, entry: { payload: { share: number } }) => [
-                  `${v} units (${entry.payload.share}%)`,
+                formatter={(v: number, _: string, entry: { payload?: { share: number } }) => [
+                  `${v} units (${entry.payload?.share ?? 0}%)`,
                   'Demand',
                 ]}
               />
@@ -139,7 +139,7 @@ export default function Round4({ onComplete }: Round4Props) {
         >
           <p className="text-sky-900 text-sm font-semibold text-center">
             Key insight: spatial analysis reveals where to invest resources for maximum reach and efficiency
-            across Australia's diverse geography.
+            across Australia&apos;s diverse geography.
           </p>
         </div>
 

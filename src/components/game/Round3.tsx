@@ -112,7 +112,7 @@ export default function Round3({ onComplete }: Round3Props) {
         >
           <p className="text-amber-700 text-sm font-bold mb-2">💡 The optimisation question</p>
           <p className="text-[#001E62] text-sm">
-            If December demand is nearly <strong className="text-amber-800">twice July's</strong>, how should you
+            If December demand is nearly <strong className="text-amber-800">twice July&apos;s</strong>, how should you
             allocate monthly stock orders to <strong className="text-amber-800">maximise annual profit</strong>?
           </p>
           <p className="text-[#001E62]/70 text-sm mt-2">
@@ -129,11 +129,11 @@ export default function Round3({ onComplete }: Round3Props) {
           <ul className="space-y-2 text-white/60 text-sm">
             <li className="flex gap-2">
               <span className="text-blue-400 shrink-0">▸</span>
-              Sales follow a clear <strong className="text-white/80">seasonal pattern</strong> — Australia's summer (Dec–Feb) drives peak demand for ice cream.
+              Sales follow a clear <strong className="text-white/80">seasonal pattern</strong> — Australia&apos;s summer (Dec–Feb) drives peak demand for ice cream.
             </li>
             <li className="flex gap-2">
               <span className="text-blue-400 shrink-0">▸</span>
-              December is nearly twice July's sales — a {seasonalSwing}% swing between peak and trough.
+              December is nearly twice July&apos;s sales — a {seasonalSwing}% swing between peak and trough.
             </li>
             <li className="flex gap-2">
               <span className="text-blue-400 shrink-0">▸</span>

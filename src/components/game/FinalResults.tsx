@@ -284,7 +284,7 @@ export default function FinalResults({ round1Profit, round2Profit, score, onRest
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.26 }}>
         <div className="text-3xl mb-2">🎓</div>
         <p className="font-black text-[#001E62] text-base mb-1">Study This at Curtin University</p>
-        <p className="text-[#001E62]/65 text-sm mb-3">These techniques are core to Curtin's mathematics, statistics and data science programs.</p>
+        <p className="text-[#001E62]/65 text-sm mb-3">These techniques are core to Curtin&apos;s mathematics, statistics and data science programs.</p>
         <div className="flex flex-wrap justify-center gap-2">
           {['B.Sc. Statistics', 'B.Sc. Mathematics', 'Data Science', 'Operations Research', 'Actuarial Science'].map((prog) => (
             <span key={prog} className="text-xs font-bold px-3 py-1 rounded-full"
