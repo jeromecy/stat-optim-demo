@@ -1,0 +1,231 @@
+'use client';
+
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+
+interface RealWorldCTAProps {
+  onRestart: () => void;
+}
+
+const EXAMPLES = [
+  {
+    icon: '🎬',
+    company: 'Netflix',
+    title: 'Recommendation Engine',
+    description:
+      "Netflix uses statistics to learn your preferences from millions of watch patterns, then optimisation to pick exactly which shows to put in front of you.",
+    color: '#e50914',
+    glowColor: 'rgba(229,9,20,0.35)',
+    tag: 'Collaborative Filtering',
+  },
+  {
+    icon: '🚗',
+    company: 'Uber & Lyft',
+    title: 'Surge Pricing',
+    description:
+      "Real-time demand statistics power dynamic pricing algorithms that balance supply and demand — optimising revenue while keeping riders moving.",
+    color: '#00b4d8',
+    glowColor: 'rgba(0,180,216,0.35)',
+    tag: 'Dynamic Optimisation',
+  },
+  {
+    icon: '🌾',
+    company: 'Precision Agriculture',
+    title: 'Crop Yield Optimisation',
+    description:
+      "Farmers use sensor data and statistical models to optimise irrigation, fertiliser, and planting decisions — maximising yield while reducing waste.",
+    color: '#52b788',
+    glowColor: 'rgba(82,183,136,0.35)',
+    tag: 'Operations Research',
+  },
+  {
+    icon: '🏥',
+    company: 'Healthcare',
+    title: 'Clinical Trials & Treatment',
+    description:
+      "Statistics determine which treatments work. Optimisation allocates limited medical resources to save the most lives with what we have.",
+    color: '#9d4edd',
+    glowColor: 'rgba(157,78,221,0.35)',
+    tag: 'Biostatistics',
+  },
+  {
+    icon: '⚡',
+    company: 'Power Grid',
+    title: 'Energy Distribution',
+    description:
+      "Statistical forecasting predicts electricity demand; optimisation algorithms then route power across the grid to avoid blackouts and cut costs.",
+    color: '#ffd60a',
+    glowColor: 'rgba(255,214,10,0.35)',
+    tag: 'Systems Optimisation',
+  },
+  {
+    icon: '💰',
+    company: 'Finance',
+    title: 'Portfolio Optimisation',
+    description:
+      "Banks and funds use statistical risk models and optimisation to build portfolios that maximise returns for a given level of risk.",
+    color: '#06d6a0',
+    glowColor: 'rgba(6,214,160,0.35)',
+    tag: 'Quantitative Finance',
+  },
+];
+
+export default function RealWorldCTA({ onRestart }: RealWorldCTAProps) {
+  const [expanded, setExpanded] = useState<number | null>(null);
+
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-6">
+      {/* Header */}
+      <motion.div
+        className="text-center mb-6"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <div
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-3 text-sm font-bold"
+          style={{
+            background: 'rgba(0,212,255,0.2)',
+            border: '1px solid rgba(0,212,255,0.5)',
+            color: '#00d4ff',
+          }}
+        >
+          🌍 Real-World Impact
+        </div>
+        <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
+          <span className="gradient-text-blue">This is everywhere.</span>
+        </h2>
+        <p className="text-white/60 text-sm">
+          The same logic you just used — data → statistics → optimisation — runs the modern world.
+        </p>
+      </motion.div>
+
+      {/* Example cards */}
+      <div className="grid grid-cols-1 gap-3 mb-6">
+        {EXAMPLES.map((ex, i) => (
+          <motion.div
+            key={i}
+            className="rounded-2xl overflow-hidden cursor-pointer"
+            style={{
+              background: `${ex.color}12`,
+              border: `1px solid ${ex.color}40`,
+              boxShadow: expanded === i ? `0 0 20px ${ex.glowColor}` : 'none',
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.08 }}
+            onClick={() => setExpanded(expanded === i ? null : i)}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <div className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">{ex.icon}</span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="font-black text-white text-sm">{ex.company}</p>
+                    <span
+                      className="text-xs px-2 py-0.5 rounded-full font-bold"
+                      style={{ background: `${ex.color}25`, color: ex.color }}
+                    >
+                      {ex.tag}
+                    </span>
+                  </div>
+                  <p className="text-white/60 text-xs">{ex.title}</p>
+                </div>
+              </div>
+              <motion.span
+                className="text-white/40 text-lg"
+                animate={{ rotate: expanded === i ? 90 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                ›
+              </motion.span>
+            </div>
+
+            <motion.div
+              initial={false}
+              animate={{ height: expanded === i ? 'auto' : 0, opacity: expanded === i ? 1 : 0 }}
+              transition={{ duration: 0.25, ease: 'easeInOut' }}
+              style={{ overflow: 'hidden' }}
+            >
+              <div
+                className="px-4 pb-4 pt-0 text-sm text-white/75 leading-relaxed border-t"
+                style={{ borderColor: `${ex.color}25` }}
+              >
+                {ex.description}
+              </div>
+            </motion.div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Curtin CTA */}
+      <motion.div
+        className="rounded-2xl p-6 mb-5 text-center"
+        style={{
+          background: 'linear-gradient(135deg, rgba(124,58,237,0.3), rgba(255,0,110,0.2))',
+          border: '1px solid rgba(124,58,237,0.5)',
+        }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+      >
+        {/* Curtin badge */}
+        <div className="flex items-center justify-center gap-2 mb-3">
+          <span className="text-2xl">🎓</span>
+          <span className="font-black text-white text-lg">Curtin University</span>
+        </div>
+
+        <h3 className="text-xl md:text-2xl font-black text-white mb-2">
+          Want to build these systems?
+        </h3>
+        <p className="text-white/70 text-sm mb-4 leading-relaxed">
+          Study <strong className="text-purple-300">Statistics & Industrial Optimisation</strong> at Curtin.
+          Learn to design the algorithms powering Netflix, Uber, healthcare, and more.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <motion.a
+            href="https://study.curtin.edu.au"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary justify-center"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+          >
+            🚀 Explore Curtin Courses
+          </motion.a>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-3 mt-5">
+          {[
+            { val: '#1', label: 'in WA for graduate outcomes' },
+            { val: '4★', label: 'QS World University' },
+            { val: '180+', label: 'nationalities on campus' },
+          ].map((stat, i) => (
+            <div key={i} className="text-center">
+              <div className="text-yellow-400 font-black text-xl">{stat.val}</div>
+              <div className="text-white/50 text-xs leading-tight">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Restart */}
+      <motion.div
+        className="text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8 }}
+      >
+        <button className="btn-secondary" onClick={onRestart}>
+          🔄 Play Again
+        </button>
+        <p className="text-white/30 text-xs mt-3">
+          Share this game with friends! stat-optim-demo.netlify.app
+        </p>
+      </motion.div>
+    </div>
+  );
+}
