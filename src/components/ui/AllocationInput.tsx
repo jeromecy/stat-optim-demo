@@ -38,9 +38,9 @@ export default function AllocationInput({ allocation, onChange }: AllocationInpu
               ? 'rgba(6,214,160,0.2)'
               : remaining <= 3
               ? 'rgba(255,214,10,0.2)'
-              : 'rgba(255,255,255,0.1)',
-            color: remaining === 0 ? '#06d6a0' : remaining <= 3 ? '#ffd60a' : '#ffffff99',
-            border: `1px solid ${remaining === 0 ? 'rgba(6,214,160,0.5)' : 'rgba(255,255,255,0.15)'}`,
+              : 'rgba(0,30,98,0.07)',
+            color: remaining === 0 ? '#06d6a0' : remaining <= 3 ? '#c27c00' : 'rgba(0,30,98,0.55)',
+            border: `1px solid ${remaining === 0 ? 'rgba(6,214,160,0.5)' : 'rgba(0,30,98,0.15)'}`,
           }}
         >
           {remaining > 0 ? `${remaining} scoops left` : '✓ All 20 allocated!'}
@@ -67,8 +67,8 @@ export default function AllocationInput({ allocation, onChange }: AllocationInpu
                     <motion.button
                       className="w-7 h-7 rounded-lg font-black text-sm flex items-center justify-center select-none"
                       style={{
-                        background: canDecrease ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.05)',
-                        color: canDecrease ? '#fff' : 'rgba(255,255,255,0.2)',
+                        background: canDecrease ? 'rgba(0,30,98,0.12)' : 'rgba(0,30,98,0.04)',
+                        color: canDecrease ? '#001E62' : 'rgba(0,30,98,0.22)',
                       }}
                       onClick={() => adjust(flavor.id, -1)}
                       disabled={!canDecrease}
@@ -82,8 +82,8 @@ export default function AllocationInput({ allocation, onChange }: AllocationInpu
                     <motion.button
                       className="w-7 h-7 rounded-lg font-black text-sm flex items-center justify-center select-none"
                       style={{
-                        background: canIncrease ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.05)',
-                        color: canIncrease ? '#fff' : 'rgba(255,255,255,0.2)',
+                        background: canIncrease ? 'rgba(0,30,98,0.12)' : 'rgba(0,30,98,0.04)',
+                        color: canIncrease ? '#001E62' : 'rgba(0,30,98,0.22)',
                       }}
                       onClick={() => adjust(flavor.id, 1)}
                       disabled={!canIncrease}

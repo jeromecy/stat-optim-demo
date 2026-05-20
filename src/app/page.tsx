@@ -14,6 +14,16 @@ import ScoreDisplay from '@/components/ui/ScoreDisplay';
 import { getProgressPercent } from '@/lib/gameLogic';
 import type { Screen, Round1Data, Round2Data, Round3Data, Round4Data } from '@/lib/types';
 
+const NAV_ITEMS: { screen: Screen; icon: string; label: string }[] = [
+  { screen: 'intro',     icon: '🏠', label: 'Intro'      },
+  { screen: 'round1',   icon: '🎲', label: 'R1: Random'  },
+  { screen: 'round2',   icon: '📊', label: 'R2: Data'    },
+  { screen: 'round3',   icon: '📅', label: 'R3: Seasonal'},
+  { screen: 'round4',   icon: '🗺️', label: 'R4: Spatial' },
+  { screen: 'final',    icon: '🏆', label: 'Results'     },
+  { screen: 'realworld',icon: '🌏', label: 'Real World'  },
+];
+
 interface GameState {
   screen: Screen;
   score: number;
@@ -107,24 +117,46 @@ export default function GamePage() {
     setState(INITIAL_STATE);
   }, []);
 
+  const navigateTo = useCallback((target: Screen) => {
+    setState((s) => ({ ...s, screen: target }));
+  }, []);
+
   const showHUD = screen !== 'intro';
 
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0b1220 0%, #101827 46%, #172033 100%)' }}>
+    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #dbeafe 0%, #eff6ff 46%, #e0f2fe 100%)' }}>
       {showHUD && (
         <motion.div
           className="sticky top-0 z-50"
           style={{
-            background: 'rgba(11,18,32,0.86)',
+            background: 'rgba(0,15,58,0.90)',
             backdropFilter: 'blur(12px)',
-            borderBottom: '1px solid rgba(148,163,184,0.18)',
+            borderBottom: '1px solid rgba(232,160,0,0.30)',
           }}
           initial={{ y: -60, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
           <ProgressBar percent={progress} screen={screen} />
-          <ScoreDisplay score={score} profit={profit} />
+          {/* Navigation chips */}
+          <div className="flex justify-center gap-1 px-3 py-1.5 overflow-x-auto scrollbar-none">
+            {NAV_ITEMS.map((item) => (
+              <button
+                key={item.screen}
+                onClick={() => navigateTo(item.screen)}
+                className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold transition-all duration-150"
+                style={
+                  screen === item.screen
+                    ? { background: 'rgba(232,160,0,0.92)', color: '#001E62' }
+                    : { background: 'rgba(255,255,255,0.10)', color: 'rgba(255,255,255,0.65)' }
+                }
+              >
+                <span>{item.icon}</span>
+                <span className="hidden sm:inline">{item.label}</span>
+              </button>
+            ))}
+          </div>
+          <ScoreDisplay round1Profit={state.round1Profit} round2Profit={state.round2Profit} />
         </motion.div>
       )}
 
@@ -187,7 +219,7 @@ export default function GamePage() {
           right: '-5%',
           width: '300px',
           height: '300px',
-          background: 'radial-gradient(circle, rgba(20,184,166,0.12) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(232,160,0,0.14) 0%, transparent 70%)',
           filter: 'blur(40px)',
           zIndex: 0,
         }}
@@ -199,7 +231,7 @@ export default function GamePage() {
           left: '-5%',
           width: '250px',
           height: '250px',
-          background: 'radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(0,30,98,0.10) 0%, transparent 70%)',
           filter: 'blur(40px)',
           zIndex: 0,
         }}

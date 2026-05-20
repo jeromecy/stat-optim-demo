@@ -18,11 +18,11 @@ const BASELINE_PREF: Record<FlavorId, number> = {
 };
 
 const DEFAULT_ALLOCATION: Record<FlavorId, number> = {
-  chocolate: 8,
-  vanilla: 5,
-  strawberry: 4,
-  matcha: 2,
-  rainbow: 1,
+  chocolate: 0,
+  vanilla: 0,
+  strawberry: 0,
+  matcha: 0,
+  rainbow: 0,
 };
 
 type Phase = 'allocate' | 'results';
@@ -69,12 +69,12 @@ export default function Round2({ round1Profit, onComplete }: Round2Props) {
       <motion.div className="text-center mb-6" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
         <div
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-3 text-sm font-bold"
-          style={{ background: 'rgba(20,184,166,0.2)', border: '1px solid rgba(20,184,166,0.45)', color: '#99f6e4' }}
+          style={{ background: 'rgba(20,184,166,0.2)', border: '1px solid rgba(20,184,166,0.45)', color: '#0d9488' }}
         >
           Round 2 - Data-Guided Allocation
         </div>
-        <h2 className="text-2xl md:text-3xl font-black text-white">Allocate Using Customer Data</h2>
-        <p className="text-white/60 text-sm mt-2">Use this preference dataset, lock an allocation, and run another 5-day simulation.</p>
+        <h2 className="text-2xl md:text-3xl font-black text-[#001E62]">Allocate Using Customer Data</h2>
+        <p className="text-[#001E62]/70 text-sm mt-2">Use this preference dataset, lock an allocation, and run another 5-day simulation.</p>
       </motion.div>
 
       <AnimatePresence mode="wait">
@@ -90,10 +90,12 @@ export default function Round2({ round1Profit, onComplete }: Round2Props) {
               <p className="text-white/55 text-xs font-bold mb-2 uppercase tracking-wide">Observed customer preference sample</p>
               <ResponsiveContainer width="100%" height={180}>
                 <BarChart data={demandChart}>
-                  <XAxis dataKey="label" tick={{ fill: 'rgba(255,255,255,0.65)', fontSize: 11 }} axisLine={false} tickLine={false} />
-                  <YAxis unit="%" tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 10 }} axisLine={false} tickLine={false} />
+                  <XAxis dataKey="label" tick={{ fill: 'rgba(0,30,98,0.70)', fontSize: 11 }} axisLine={false} tickLine={false} />
+                  <YAxis unit="%" tick={{ fill: 'rgba(0,30,98,0.55)', fontSize: 10 }} axisLine={false} tickLine={false} />
                   <Tooltip
-                    contentStyle={{ background: 'rgba(15,23,42,0.95)', border: '1px solid rgba(148,163,184,0.25)', borderRadius: 8 }}
+                    contentStyle={{ background: 'rgba(255,255,255,0.98)', border: '1px solid rgba(0,30,98,0.15)', borderRadius: 8 }}
+                    labelStyle={{ color: '#001E62', fontWeight: 600, fontSize: 12 }}
+                    itemStyle={{ color: '#374151', fontSize: 12 }}
                     formatter={(v: number) => [`${v}%`, 'Preference share']}
                   />
                   <Bar dataKey="pct" radius={[6, 6, 0, 0]}>
@@ -107,6 +109,10 @@ export default function Round2({ round1Profit, onComplete }: Round2Props) {
             </div>
 
             <div className="glass-card p-5">
+              <div className="rounded-lg p-3 mb-4" style={{ background: 'rgba(20,184,166,0.1)', border: '1px solid rgba(20,184,166,0.3)' }}>
+                <p className="text-teal-200 text-sm font-semibold mb-1">📊 Your turn — allocate all 20 scoops based on the demand chart above.</p>
+                <p className="text-white/55 text-xs">Flavours with a higher preference share should receive more scoops. Try to match your split to the percentages.</p>
+              </div>
               <AllocationInput allocation={allocation} onChange={setAllocation} />
             </div>
 

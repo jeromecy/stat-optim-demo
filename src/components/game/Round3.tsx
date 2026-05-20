@@ -1,9 +1,8 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid, ReferenceArea } from 'recharts';
-import AnimatedCounter from '@/components/ui/AnimatedCounter';
+import { useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid, ReferenceLine } from 'recharts';
 import type { Round3Data } from '@/lib/types';
 
 const MONTHS = [
@@ -11,169 +10,159 @@ const MONTHS = [
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
 
+// Australia (Southern Hemisphere): summer peaks Dec–Feb, winter trough Jun–Jul
 const SEASONAL_INDEX = [1.25, 1.2, 1.05, 0.9, 0.75, 0.68, 0.65, 0.72, 0.82, 0.95, 1.1, 1.28];
-const BASE_DEMAND = 320;
-const BASE_CAPACITY = 320;
-const UNIT_PRICE = 3;
-const WASTE_COST = 0.9;
+const BASE_SALES = 320;
 
 interface Round3Props {
   onComplete: (data: Round3Data) => void;
 }
 
-type Phase = 'plan' | 'result';
-
 export default function Round3({ onComplete }: Round3Props) {
-  const [phase, setPhase] = useState<Phase>('plan');
-  const [intensity, setIntensity] = useState(20);
-
-  const monthlyDemand = useMemo(
-    () => MONTHS.map((month, i) => ({ month, demand: Math.round(BASE_DEMAND * SEASONAL_INDEX[i]) })),
+  const monthlyData = useMemo(
+    () => MONTHS.map((month, i) => ({ month, sales: Math.round(BASE_SALES * SEASONAL_INDEX[i]) })),
     []
   );
 
-  const annualResult = useMemo(() => {
-    const seasonalSignal = SEASONAL_INDEX.map((v) => v - 1);
-    const meanSignal = seasonalSignal.reduce((s, v) => s + v, 0) / seasonalSignal.length;
-    const centeredSignal = seasonalSignal.map((v) => v - meanSignal);
-
-    const capacityByMonth = centeredSignal.map((signal) => {
-      const moved = signal * intensity * 2.4;
-      return Math.max(180, Math.round(BASE_CAPACITY + moved));
-    });
-
-    const monthly = monthlyDemand.map((row, i) => {
-      const capacity = capacityByMonth[i];
-      const sold = Math.min(row.demand, capacity);
-      const wasted = Math.max(0, capacity - row.demand);
-      const profit = sold * UNIT_PRICE - wasted * WASTE_COST;
-      return {
-        month: row.month,
-        demand: row.demand,
-        capacity,
-        sold,
-        wasted,
-        profit,
-      };
-    });
-
-    const totalProfit = Math.round(monthly.reduce((s, m) => s + m.profit, 0));
-    return { monthly, totalProfit };
-  }, [intensity, monthlyDemand]);
-
-  const handleRun = () => {
-    setPhase('result');
-  };
-
-  const handleContinue = () => {
-    onComplete({
-      totalProfit: annualResult.totalProfit,
-      reallocationIntensity: intensity,
-    });
-  };
+  const annualTotal = useMemo(() => monthlyData.reduce((s, m) => s + m.sales, 0), [monthlyData]);
+  const monthlyAvg = Math.round(annualTotal / 12);
+  const peakMonth = monthlyData.reduce((best, m) => (m.sales > best.sales ? m : best));
+  const troughMonth = monthlyData.reduce((best, m) => (m.sales < best.sales ? m : best));
+  const seasonalSwing = Math.round(((peakMonth.sales - troughMonth.sales) / troughMonth.sales) * 100);
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-6">
       <motion.div className="text-center mb-6" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
         <div
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-3 text-sm font-bold"
-          style={{ background: 'rgba(59,130,246,0.2)', border: '1px solid rgba(59,130,246,0.45)', color: '#bfdbfe' }}
+          style={{ background: 'rgba(59,130,246,0.2)', border: '1px solid rgba(59,130,246,0.45)', color: '#1d4ed8' }}
         >
-          Round 3 - Seasonal Time Series (Australia)
+          Round 3 – Time Series Analysis
         </div>
-        <h2 className="text-2xl md:text-3xl font-black text-white">Optimise Resources Across the Year</h2>
-        <p className="text-white/60 text-sm mt-2">Use seasonality to shift capacity between high and low demand months.</p>
-        <p className="text-xs text-amber-200/90 mt-2">
-          Disclaimer: This yearly dataset is simulated for demonstration purposes.
-        </p>
+        <h2 className="text-2xl md:text-3xl font-black text-[#001E62]">Annual Sales Patterns</h2>
+        <p className="text-[#001E62]/70 text-sm mt-2">How does demand change across the year — and what does that tell us?</p>
+        <p className="text-xs text-amber-700/80 mt-2">Simulated data for demonstration purposes.</p>
       </motion.div>
 
-      <AnimatePresence mode="wait">
-        {phase === 'plan' && (
-          <motion.div
-            key="plan"
-            className="space-y-4"
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -30 }}
-          >
-            <div className="glass-card p-4">
-              <p className="text-white/55 text-xs font-bold mb-2 uppercase tracking-wide">National monthly demand pattern</p>
-              <ResponsiveContainer width="100%" height={260}>
-                <LineChart data={monthlyDemand}>
-                  <CartesianGrid stroke="rgba(148,163,184,0.18)" strokeDasharray="3 3" />
-                  <XAxis dataKey="month" tick={{ fill: 'rgba(255,255,255,0.65)', fontSize: 11 }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 10 }} axisLine={false} tickLine={false} />
-                  <Tooltip
-                    contentStyle={{ background: 'rgba(15,23,42,0.95)', border: '1px solid rgba(148,163,184,0.25)', borderRadius: 8 }}
-                    formatter={(v: number) => [`${v}`, 'Estimated units']}
-                  />
-                  <ReferenceArea x1="Dec" x2="Feb" ifOverflow="visible" fill="rgba(245,158,11,0.08)" />
-                  <Line type="monotone" dataKey="demand" stroke="#f59e0b" strokeWidth={3} dot={{ r: 4, fill: '#f59e0b', strokeWidth: 0 }} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-
-            <div className="glass-card p-5">
-              <p className="text-white/70 font-semibold mb-2">Reallocation intensity: {intensity}%</p>
-              <input
-                type="range"
-                min={0}
-                max={40}
-                step={1}
-                value={intensity}
-                onChange={(e) => setIntensity(Number(e.target.value))}
-                className="w-full"
-                style={{
-                  background: `linear-gradient(to right, #0f766e 0%, #2563eb ${(intensity / 40) * 100}%, rgba(255,255,255,0.15) ${(intensity / 40) * 100}%, rgba(255,255,255,0.15) 100%)`,
-                }}
+      <motion.div className="space-y-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+        {/* Line chart */}
+        <div className="glass-card p-4">
+          <p className="text-white/55 text-xs font-bold mb-3 uppercase tracking-wide">Monthly sales — national (units)</p>
+          <ResponsiveContainer width="100%" height={260}>
+            <LineChart data={monthlyData}>
+              <CartesianGrid stroke="rgba(148,163,184,0.18)" strokeDasharray="3 3" />
+              <XAxis
+                dataKey="month"
+                tick={{ fill: 'rgba(0,30,98,0.70)', fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
               />
-              <p className="text-xs text-white/55 mt-3">
-                0% keeps monthly resources flat. Higher values move capacity from winter into summer peaks.
-              </p>
-            </div>
+              <YAxis
+                tick={{ fill: 'rgba(0,30,98,0.55)', fontSize: 10 }}
+                axisLine={false}
+                tickLine={false}
+                domain={[150, 440]}
+              />
+              <Tooltip
+                contentStyle={{ background: 'rgba(255,255,255,0.98)', border: '1px solid rgba(0,30,98,0.15)', borderRadius: 8 }}
+                labelStyle={{ color: '#001E62', fontWeight: 600, fontSize: 12 }}
+                itemStyle={{ color: '#374151', fontSize: 12 }}
+                formatter={(v: number) => [`${v}`, 'Units sold']}
+              />
+              <ReferenceLine
+                y={monthlyAvg}
+                stroke="rgba(0,30,98,0.25)"
+                strokeDasharray="4 4"
+                label={{ value: 'monthly avg', fill: 'rgba(0,30,98,0.42)', fontSize: 10, position: 'insideTopRight' }}
+              />
+              <Line
+                type="monotone"
+                dataKey="sales"
+                stroke="#3b82f6"
+                strokeWidth={3}
+                dot={{ r: 4, fill: '#3b82f6', strokeWidth: 0 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
 
-            <button className="btn-primary w-full justify-center" onClick={handleRun}>
-              Run Annual Optimisation
-            </button>
-          </motion.div>
-        )}
+        {/* Key stats */}
+        <div className="grid grid-cols-3 gap-3">
+          <div className="glass-card p-3 text-center">
+            <p className="text-white/50 text-xs mb-1">Annual Total</p>
+            <p className="text-2xl font-black text-blue-300">{annualTotal.toLocaleString()}</p>
+            <p className="text-white/40 text-xs">units / year</p>
+          </div>
+          <div className="glass-card p-3 text-center">
+            <p className="text-white/50 text-xs mb-1">Peak Month</p>
+            <p className="text-2xl font-black text-amber-300">{peakMonth.month}</p>
+            <p className="text-white/40 text-xs">{peakMonth.sales} units</p>
+          </div>
+          <div className="glass-card p-3 text-center">
+            <p className="text-white/50 text-xs mb-1">Seasonal Swing</p>
+            <p className="text-2xl font-black text-teal-300">+{seasonalSwing}%</p>
+            <p className="text-white/40 text-xs">peak vs trough</p>
+          </div>
+        </div>
 
-        {phase === 'result' && (
-          <motion.div
-            key="result"
-            className="space-y-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="glass-card p-4">
-              <p className="text-white/55 text-xs font-bold mb-2 uppercase tracking-wide">Demand vs allocated capacity</p>
-              <ResponsiveContainer width="100%" height={260}>
-                <LineChart data={annualResult.monthly}>
-                  <CartesianGrid stroke="rgba(148,163,184,0.18)" strokeDasharray="3 3" />
-                  <XAxis dataKey="month" tick={{ fill: 'rgba(255,255,255,0.65)', fontSize: 11 }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 10 }} axisLine={false} tickLine={false} />
-                  <Tooltip
-                    contentStyle={{ background: 'rgba(15,23,42,0.95)', border: '1px solid rgba(148,163,184,0.25)', borderRadius: 8 }}
-                  />
-                  <Line type="monotone" dataKey="demand" stroke="#f59e0b" strokeWidth={3} dot={false} name="Demand" />
-                  <Line type="monotone" dataKey="capacity" stroke="#14b8a6" strokeWidth={3} dot={false} name="Capacity" />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
+        {/* Optimisation question */}
+        <div
+          className="rounded-xl p-4"
+          style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.38)' }}
+        >
+          <p className="text-amber-700 text-sm font-bold mb-2">💡 The optimisation question</p>
+          <p className="text-[#001E62] text-sm">
+            If December demand is nearly <strong className="text-amber-800">twice July's</strong>, how should you
+            allocate monthly stock orders to <strong className="text-amber-800">maximise annual profit</strong>?
+          </p>
+          <p className="text-[#001E62]/70 text-sm mt-2">
+            Order too much in winter → unsold stock, waste costs.<br />
+            Order too little in summer → missed sales, lost revenue.<br />
+            <strong className="text-amber-700">Optimisation models</strong> find the ideal allocation across all
+            12 months automatically — balancing holding costs against lost-sales costs to maximise total annual profit.
+          </p>
+        </div>
 
-            <div className="rounded-xl p-4 text-center" style={{ background: 'rgba(20,184,166,0.12)', border: '1px solid rgba(20,184,166,0.28)' }}>
-              <p className="text-white/60 text-sm mb-1">Round 3 annual profit</p>
-              <AnimatedCounter value={annualResult.totalProfit} prefix="$" className="text-3xl font-black text-teal-300" />
-              <p className="text-xs text-white/50 mt-2">Resource shift intensity used: {intensity}%</p>
-            </div>
+        {/* Insights */}
+        <div className="glass-card p-4">
+          <p className="text-white/70 font-semibold text-sm mb-3">What this tells us</p>
+          <ul className="space-y-2 text-white/60 text-sm">
+            <li className="flex gap-2">
+              <span className="text-blue-400 shrink-0">▸</span>
+              Sales follow a clear <strong className="text-white/80">seasonal pattern</strong> — Australia's summer (Dec–Feb) drives peak demand for ice cream.
+            </li>
+            <li className="flex gap-2">
+              <span className="text-blue-400 shrink-0">▸</span>
+              December is nearly twice July's sales — a {seasonalSwing}% swing between peak and trough.
+            </li>
+            <li className="flex gap-2">
+              <span className="text-blue-400 shrink-0">▸</span>
+              Businesses can use these patterns to plan staffing, stock orders, and production schedules well ahead of each peak.
+            </li>
+            <li className="flex gap-2">
+              <span className="text-blue-400 shrink-0">▸</span>
+              Statistics provides tools like <em>seasonal decomposition</em> and <em>ARIMA models</em> to automatically extract these patterns from real historical data.
+            </li>
+          </ul>
+        </div>
 
-            <button className="btn-primary w-full justify-center" onClick={handleContinue}>
-              Continue to Round 4
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        <div
+          className="rounded-xl p-4"
+          style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.3)' }}
+        >
+          <p className="text-blue-900 text-sm font-semibold text-center">
+            Key insight: time series analysis turns historical sales into actionable seasonal forecasts —
+            reducing over-stocking in winter and shortfalls in summer.
+          </p>
+        </div>
+
+        <button
+          className="btn-primary w-full justify-center"
+          onClick={() => onComplete({ totalProfit: 0, reallocationIntensity: 0 })}
+        >
+          Continue to Spatial Analysis →
+        </button>
+      </motion.div>
     </div>
   );
 }

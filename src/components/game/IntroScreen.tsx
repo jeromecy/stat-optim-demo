@@ -66,11 +66,11 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
       >
         {/* Badge */}
         <motion.div
-          className="inline-block mb-4 px-3 py-1 rounded-full text-xs font-bold"
+          className="inline-block mb-4 px-4 py-1.5 rounded-full text-sm font-black"
           style={{
-            background: 'rgba(15,118,110,0.2)',
-            border: '1px solid rgba(20,184,166,0.35)',
-            color: '#99f6e4',
+            background: 'rgba(0,30,98,0.09)',
+            border: '1px solid rgba(232,160,0,0.50)',
+            color: '#001E62',
           }}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -107,8 +107,8 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
           transition={{ delay: 0.5 }}
         >
           Make decisions. Collect data. Discover how{' '}
-          <span className="text-yellow-300 font-bold">statistics</span> and{' '}
-          <span className="text-cyan-300 font-bold">optimisation</span> help you earn more!
+          <span className="text-amber-700 font-bold">statistics</span> and{' '}
+          <span className="text-sky-700 font-bold">optimisation</span> help you earn more!
         </motion.p>
 
         {/* Feature pills */}
@@ -127,8 +127,8 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
               key={pill.text}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold"
               style={{
-                background: 'rgba(255,255,255,0.1)',
-                border: '1px solid rgba(255,255,255,0.2)',
+                background: 'rgba(0,30,98,0.07)',
+                border: '1px solid rgba(0,30,98,0.15)',
               }}
             >
               <span>{pill.icon}</span>

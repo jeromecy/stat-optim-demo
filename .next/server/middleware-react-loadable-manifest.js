@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST="{\"components/game/Round4.tsx -> ./AustraliaMap\":{\"id\":\"components/game/Round4.tsx -> ./AustraliaMap\",\"files\":[\"static/chunks/_app-pages-browser_src_components_game_AustraliaMap_tsx.js\"]}}"

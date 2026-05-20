@@ -47,15 +47,16 @@ export default function Round1({ onComplete }: Round1Props) {
       <motion.div className="text-center mb-6" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
         <div
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-3 text-sm font-bold"
-          style={{ background: 'rgba(245,158,11,0.2)', border: '1px solid rgba(245,158,11,0.45)', color: '#fcd34d' }}
+          style={{ background: 'rgba(239,68,68,0.18)', border: '1px solid rgba(239,68,68,0.5)', color: '#b91c1c' }}
         >
-          Round 1 - Random Guess
+          🎲 Round 1 – Blind Random Guess
         </div>
-        <h2 className="text-2xl md:text-3xl font-black text-white">
-          Start With Zero Data
+        <h2 className="text-2xl md:text-3xl font-black text-[#001E62]">
+          No Data. No Analysis.{' '}
+          <span style={{ color: '#f59e0b' }}>Pure Guess.</span>
         </h2>
-        <p className="text-white/60 text-sm mt-2">
-          Randomly allocate 20 scoops, then run a 5-day simulation.
+        <p className="text-[#001E62]/70 text-sm mt-2">
+          You have 20 scoops but <strong className="text-[#001E62]">zero customer data</strong>. The computer randomly assigns flavours — then we run 5 days to see what happens.
         </p>
       </motion.div>
 
@@ -68,18 +69,21 @@ export default function Round1({ onComplete }: Round1Props) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -30 }}
           >
+            <div className="rounded-lg p-3 mb-4" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}>
+              <p className="text-red-200 text-sm font-semibold text-center">🎲 This allocation is <em>completely random</em> — no data, no logic, no analysis whatsoever.</p>
+            </div>
             <p className="text-white/60 text-xs font-bold mb-3 uppercase tracking-wide">Current random allocation</p>
             <div className="space-y-2 mb-5">
               {FLAVORS.map((flavor) => (
                 <div
                   key={flavor.id}
                   className="rounded-lg px-3 py-2 flex items-center justify-between"
-                  style={{ background: `${flavor.bgColor}80`, border: `1px solid ${flavor.borderColor}40` }}
+                  style={{ background: `${flavor.borderColor}20`, border: `1px solid ${flavor.borderColor}70` }}
                 >
                   <span style={{ color: flavor.textColor }} className="font-semibold text-sm">
                     {flavor.emoji} {flavor.name}
                   </span>
-                  <span className="text-white font-black">{allocation[flavor.id]} scoops</span>
+                  <span className="font-black text-sm" style={{ color: flavor.textColor }}>{allocation[flavor.id]} scoops</span>
                 </div>
               ))}
             </div>
