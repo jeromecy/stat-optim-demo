@@ -41,7 +41,7 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
       <div
         className="absolute w-64 h-64 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, rgba(124,58,237,0.3) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(20,184,166,0.24) 0%, transparent 70%)',
           top: '10%',
           left: '10%',
           filter: 'blur(40px)',
@@ -50,7 +50,7 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
       <div
         className="absolute w-80 h-80 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, rgba(255,0,110,0.25) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(245,158,11,0.2) 0%, transparent 70%)',
           bottom: '5%',
           right: '5%',
           filter: 'blur(50px)',
@@ -68,9 +68,9 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
         <motion.div
           className="inline-block mb-4 px-3 py-1 rounded-full text-xs font-bold"
           style={{
-            background: 'rgba(124,58,237,0.3)',
-            border: '1px solid rgba(124,58,237,0.6)',
-            color: '#c4b5fd',
+            background: 'rgba(15,118,110,0.2)',
+            border: '1px solid rgba(20,184,166,0.35)',
+            color: '#99f6e4',
           }}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}

@@ -8,7 +8,7 @@ export interface Flavor {
   borderColor: string;
   textColor: string;
   glowColor: string;
-  popularity: number; // true popularity, hidden from user initially
+  popularity: number;
 }
 
 export interface DayResult {
@@ -17,7 +17,19 @@ export interface DayResult {
   chosenFlavor: FlavorId;
   customersServed: number;
   revenue: number;
-  optimalRevenue: number; // what best strategy would have earned
+  optimalRevenue: number;
+}
+
+export interface AllocationDayResult {
+  day: number;
+  round: number;
+  allocation: Record<FlavorId, number>;
+  demand: Record<FlavorId, number>;
+  sold: Record<FlavorId, number>;
+  wasted: Record<FlavorId, number>;
+  missed: Record<FlavorId, number>;
+  revenue: number;
+  optimalRevenue: number;
 }
 
 export type Screen =
@@ -30,24 +42,33 @@ export type Screen =
   | 'realworld';
 
 export interface Round1Data {
-  results: DayResult[];
+  allocation: Record<FlavorId, number>;
+  results: AllocationDayResult[];
   totalProfit: number;
 }
 
 export interface Round2Data {
-  results: DayResult[];
+  allocation: Record<FlavorId, number>;
+  results: AllocationDayResult[];
   totalProfit: number;
-  customerData: Record<FlavorId, number>;
 }
 
 export interface Round3Data {
-  guess: FlavorId;
-  correct: boolean;
-  scoreEarned: number;
+  totalProfit: number;
+  reallocationIntensity: number;
+}
+
+export interface RegionAllocationResult {
+  region: string;
+  allocation: number;
+  demand: number;
+  sold: number;
+  transportCost: number;
+  netProfit: number;
 }
 
 export interface Round4Data {
-  explorationRate: number;
-  results: DayResult[];
+  allocation: Record<string, number>;
+  results: RegionAllocationResult[];
   totalProfit: number;
 }

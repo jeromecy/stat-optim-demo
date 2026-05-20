@@ -12,9 +12,7 @@ import RealWorldCTA from '@/components/game/RealWorldCTA';
 import ProgressBar from '@/components/ui/ProgressBar';
 import ScoreDisplay from '@/components/ui/ScoreDisplay';
 import { getProgressPercent } from '@/lib/gameLogic';
-import type { Screen, FlavorId, Round1Data, Round2Data, Round3Data, Round4Data } from '@/lib/types';
-
-// ─── Game State ───────────────────────────────────────────────────────────────
+import type { Screen, Round1Data, Round2Data, Round3Data, Round4Data } from '@/lib/types';
 
 interface GameState {
   screen: Screen;
@@ -22,8 +20,8 @@ interface GameState {
   profit: number;
   round1Profit: number;
   round2Profit: number;
+  round3Profit: number;
   round4Profit: number;
-  customerData: Record<FlavorId, number>;
 }
 
 const INITIAL_STATE: GameState = {
@@ -32,11 +30,9 @@ const INITIAL_STATE: GameState = {
   profit: 0,
   round1Profit: 0,
   round2Profit: 0,
+  round3Profit: 0,
   round4Profit: 0,
-  customerData: { chocolate: 0, vanilla: 0, strawberry: 0, matcha: 0, rainbow: 0 },
 };
-
-// ─── Page Transition ──────────────────────────────────────────────────────────
 
 const pageVariants = {
   initial: { opacity: 0, y: 24, scale: 0.98 },
@@ -49,8 +45,6 @@ const pageTransition = {
   stiffness: 220,
   damping: 24,
 };
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function GamePage() {
   const [state, setState] = useState<GameState>(INITIAL_STATE);
@@ -81,7 +75,6 @@ export default function GamePage() {
       round2Profit: earned,
       profit: s.profit + earned,
       score: s.score + earned,
-      customerData: data.customerData,
     }));
   }, []);
 
@@ -89,20 +82,20 @@ export default function GamePage() {
     setState((s) => ({
       ...s,
       screen: 'round4',
-      score: s.score + data.scoreEarned,
+      round3Profit: data.totalProfit,
+      profit: s.profit + data.totalProfit,
+      score: s.score + data.totalProfit,
     }));
   }, []);
 
   const handleRound4Complete = useCallback((data: Round4Data) => {
     const earned = data.totalProfit;
-    // Bonus for low exploration (smart exploitation)
-    const exploitBonus = data.explorationRate <= 30 ? 150 : data.explorationRate <= 60 ? 75 : 0;
     setState((s) => ({
       ...s,
       screen: 'final',
       round4Profit: earned,
       profit: s.profit + earned,
-      score: s.score + earned + exploitBonus,
+      score: s.score + earned,
     }));
   }, []);
 
@@ -117,15 +110,14 @@ export default function GamePage() {
   const showHUD = screen !== 'intro';
 
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)' }}>
-      {/* Fixed header HUD */}
+    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0b1220 0%, #101827 46%, #172033 100%)' }}>
       {showHUD && (
         <motion.div
           className="sticky top-0 z-50"
           style={{
-            background: 'rgba(15,12,41,0.85)',
+            background: 'rgba(11,18,32,0.86)',
             backdropFilter: 'blur(12px)',
-            borderBottom: '1px solid rgba(255,255,255,0.08)',
+            borderBottom: '1px solid rgba(148,163,184,0.18)',
           }}
           initial={{ y: -60, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -136,7 +128,6 @@ export default function GamePage() {
         </motion.div>
       )}
 
-      {/* Main content with screen transitions */}
       <AnimatePresence mode="wait">
         {screen === 'intro' && (
           <motion.div key="intro" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={pageTransition}>
@@ -152,25 +143,19 @@ export default function GamePage() {
 
         {screen === 'round2' && (
           <motion.div key="round2" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={pageTransition}>
-            <Round2 onComplete={handleRound2Complete} />
+            <Round2 round1Profit={state.round1Profit} onComplete={handleRound2Complete} />
           </motion.div>
         )}
 
         {screen === 'round3' && (
           <motion.div key="round3" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={pageTransition}>
-            <Round3
-              customerData={state.customerData}
-              onComplete={handleRound3Complete}
-            />
+            <Round3 onComplete={handleRound3Complete} />
           </motion.div>
         )}
 
         {screen === 'round4' && (
           <motion.div key="round4" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={pageTransition}>
-            <Round4
-              customerData={state.customerData}
-              onComplete={handleRound4Complete}
-            />
+            <Round4 onComplete={handleRound4Complete} />
           </motion.div>
         )}
 
@@ -179,6 +164,7 @@ export default function GamePage() {
             <FinalResults
               round1Profit={state.round1Profit}
               round2Profit={state.round2Profit}
+              round3Profit={state.round3Profit}
               round4Profit={state.round4Profit}
               score={score}
               onRestart={handleRestart}
@@ -194,7 +180,6 @@ export default function GamePage() {
         )}
       </AnimatePresence>
 
-      {/* Decorative background orbs */}
       <div
         className="fixed pointer-events-none"
         style={{
@@ -202,7 +187,7 @@ export default function GamePage() {
           right: '-5%',
           width: '300px',
           height: '300px',
-          background: 'radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(20,184,166,0.12) 0%, transparent 70%)',
           filter: 'blur(40px)',
           zIndex: 0,
         }}
@@ -214,7 +199,7 @@ export default function GamePage() {
           left: '-5%',
           width: '250px',
           height: '250px',
-          background: 'radial-gradient(circle, rgba(255,0,110,0.1) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%)',
           filter: 'blur(40px)',
           zIndex: 0,
         }}

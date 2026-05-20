@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Data to Decision 🎯 — Curtin Open Day',
+  title: 'Data to Decision — Statistics & Optimisation Game',
   description:
-    'Run your own ice cream shop and discover how statistics and optimisation help make smarter decisions. An interactive game by Curtin University.',
+    'Run your own ice cream shop and discover how statistics and optimisation help make smarter decisions.',
   openGraph: {
     title: 'Can You Run a Successful Ice Cream Shop?',
-    description: 'An interactive game about statistics & optimisation — Curtin University Open Day',
+    description: 'An interactive game about statistics and optimisation for data-driven decision making',
     type: 'website',
   },
 };

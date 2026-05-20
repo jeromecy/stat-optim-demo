@@ -13,9 +13,9 @@ module.exports = {
       },
       colors: {
         game: {
-          bg: '#0f0c29',
-          card: 'rgba(255,255,255,0.08)',
-          border: 'rgba(255,255,255,0.15)',
+          bg: '#0b1220',
+          card: 'rgba(15,23,42,0.74)',
+          border: 'rgba(148,163,184,0.18)',
         },
       },
       animation: {

@@ -1,4 +1,4 @@
-import type { Flavor, FlavorId, DayResult } from './types';
+import type { Flavor, FlavorId, DayResult, AllocationDayResult } from './types';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -77,6 +77,36 @@ export function getMostPopularFlavor(data: Record<FlavorId, number>): FlavorId {
   return best;
 }
 
+export function randomAllocation(totalScoops = CUSTOMERS_PER_DAY): Record<FlavorId, number> {
+  const ids = FLAVORS.map((f) => f.id);
+  const allocation: Record<FlavorId, number> = {
+    chocolate: 0,
+    vanilla: 0,
+    strawberry: 0,
+    matcha: 0,
+    rainbow: 0,
+  };
+
+  for (let i = 0; i < totalScoops; i++) {
+    const id = ids[Math.floor(Math.random() * ids.length)];
+    allocation[id] += 1;
+  }
+
+  return allocation;
+}
+
+export function simulateAllocationStrategy(
+  allocation: Record<FlavorId, number>,
+  days: number,
+  round: number
+): AllocationDayResult[] {
+  const results: AllocationDayResult[] = [];
+  for (let d = 1; d <= days; d++) {
+    results.push(simulateAllocationDay({ ...allocation }, d, round));
+  }
+  return results;
+}
+
 // ─── Simulation ───────────────────────────────────────────────────────────────
 
 /**
@@ -136,6 +166,35 @@ export function sampleCustomerPreferences(): Record<FlavorId, number> {
     }
   }
   return counts;
+}
+
+/**
+ * Simulate one day with 20-scoop allocation across flavours.
+ * Each customer wants a flavour sampled from the true distribution.
+ * sold = min(allocation, demand), wasted = surplus, missed = unmet demand.
+ */
+export function simulateAllocationDay(
+  allocation: Record<FlavorId, number>,
+  day: number,
+  round: number
+): AllocationDayResult {
+  const demand = sampleCustomerPreferences();
+  const sold: Record<FlavorId, number> = { chocolate: 0, vanilla: 0, strawberry: 0, matcha: 0, rainbow: 0 };
+  const wasted: Record<FlavorId, number> = { chocolate: 0, vanilla: 0, strawberry: 0, matcha: 0, rainbow: 0 };
+  const missed: Record<FlavorId, number> = { chocolate: 0, vanilla: 0, strawberry: 0, matcha: 0, rainbow: 0 };
+
+  for (const f of FLAVORS) {
+    const d = demand[f.id] ?? 0;
+    const a = allocation[f.id] ?? 0;
+    sold[f.id] = Math.min(d, a);
+    wasted[f.id] = Math.max(0, a - d);
+    missed[f.id] = Math.max(0, d - a);
+  }
+
+  const revenue = FLAVORS.reduce((sum, f) => sum + (sold[f.id] ?? 0) * PRICE_PER_SCOOP, 0);
+  const optimalRevenue = simulateCustomersToBuy(OPTIMAL_FLAVOR_ID) * PRICE_PER_SCOOP;
+
+  return { day, round, allocation, demand, sold, wasted, missed, revenue, optimalRevenue };
 }
 
 /**
@@ -223,10 +282,10 @@ export function simulateEpsilonGreedy(
 export function getProgressPercent(screen: string): number {
   const map: Record<string, number> = {
     intro: 0,
-    round1: 15,
+    round1: 18,
     round2: 38,
-    round3: 57,
-    round4: 76,
+    round3: 58,
+    round4: 78,
     final: 92,
     realworld: 100,
   };
@@ -237,11 +296,44 @@ export function gradePerformance(
   playerProfit: number,
   randomProfit: number,
   optimalProfit: number
-): { grade: string; message: string; color: string } {
+): { grade: string; message: string; color: string; ratio: number } {
   const ratio = (playerProfit - randomProfit) / Math.max(1, optimalProfit - randomProfit);
-  if (ratio >= 0.85) return { grade: 'A+', message: 'Optimisation Master! 🏆', color: '#ffd60a' };
-  if (ratio >= 0.70) return { grade: 'A', message: 'Data Wizard! 🌟', color: '#ffd60a' };
-  if (ratio >= 0.50) return { grade: 'B', message: 'Smart Analyst! 📊', color: '#06d6a0' };
-  if (ratio >= 0.25) return { grade: 'C', message: 'Good Start! 📈', color: '#3b82f6' };
-  return { grade: 'D', message: 'Keep Exploring! 🔍', color: '#f97316' };
+  if (ratio >= 0.85) return { grade: 'A+', message: 'Optimisation Master! 🏆', color: '#ffd60a', ratio };
+  if (ratio >= 0.70) return { grade: 'A', message: 'Data Wizard! 🌟', color: '#ffd60a', ratio };
+  if (ratio >= 0.50) return { grade: 'B', message: 'Smart Analyst! 📊', color: '#06d6a0', ratio };
+  if (ratio >= 0.25) return { grade: 'C', message: 'Good Start! 📈', color: '#3b82f6', ratio };
+  return { grade: 'D', message: 'Keep Exploring! 🔍', color: '#f97316', ratio };
+}
+
+// ─── Allocation-based Benchmarks ─────────────────────────────────────────────
+
+/**
+ * Proportional allocation matching true flavor popularity.
+ * chocolate:40% → 8, vanilla:28% → 6, strawberry:18% → 4, matcha:9% → 2, rainbow:5% → 0
+ */
+export const OPTIMAL_ALLOCATION: Record<FlavorId, number> = {
+  chocolate: 8,
+  vanilla: 6,
+  strawberry: 4,
+  matcha: 2,
+  rainbow: 0,
+};
+
+/** Simulate N days always using proportional optimal allocation. */
+export function simulateOptimalAllocationStrategy(days: number): number {
+  let total = 0;
+  for (let d = 0; d < days; d++) {
+    total += simulateAllocationDay({ ...OPTIMAL_ALLOCATION }, d + 1, 0).revenue;
+  }
+  return total;
+}
+
+/** Simulate N days always using equal split (naive gut-feeling baseline). */
+export function simulateNaiveAllocationStrategy(days: number): number {
+  const naive: Record<FlavorId, number> = { chocolate: 4, vanilla: 4, strawberry: 4, matcha: 4, rainbow: 4 };
+  let total = 0;
+  for (let d = 0; d < days; d++) {
+    total += simulateAllocationDay({ ...naive }, d + 1, 0).revenue;
+  }
+  return total;
 }

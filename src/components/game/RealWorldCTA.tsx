@@ -159,59 +159,6 @@ export default function RealWorldCTA({ onRestart }: RealWorldCTAProps) {
         ))}
       </div>
 
-      {/* Curtin CTA */}
-      <motion.div
-        className="rounded-2xl p-6 mb-5 text-center"
-        style={{
-          background: 'linear-gradient(135deg, rgba(124,58,237,0.3), rgba(255,0,110,0.2))',
-          border: '1px solid rgba(124,58,237,0.5)',
-        }}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-      >
-        {/* Curtin badge */}
-        <div className="flex items-center justify-center gap-2 mb-3">
-          <span className="text-2xl">🎓</span>
-          <span className="font-black text-white text-lg">Curtin University</span>
-        </div>
-
-        <h3 className="text-xl md:text-2xl font-black text-white mb-2">
-          Want to build these systems?
-        </h3>
-        <p className="text-white/70 text-sm mb-4 leading-relaxed">
-          Study <strong className="text-purple-300">Statistics & Industrial Optimisation</strong> at Curtin.
-          Learn to design the algorithms powering Netflix, Uber, healthcare, and more.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <motion.a
-            href="https://study.curtin.edu.au"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary justify-center"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-          >
-            🚀 Explore Curtin Courses
-          </motion.a>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-3 mt-5">
-          {[
-            { val: '#1', label: 'in WA for graduate outcomes' },
-            { val: '4★', label: 'QS World University' },
-            { val: '180+', label: 'nationalities on campus' },
-          ].map((stat, i) => (
-            <div key={i} className="text-center">
-              <div className="text-yellow-400 font-black text-xl">{stat.val}</div>
-              <div className="text-white/50 text-xs leading-tight">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-
       {/* Restart */}
       <motion.div
         className="text-center"

@@ -29,7 +29,7 @@ export default function ProgressBar({ percent }: ProgressBarProps) {
           <motion.div
             className="absolute left-0 top-0 h-full rounded-full progress-glow"
             style={{
-              background: 'linear-gradient(90deg, #7c3aed, #ff006e, #ffd60a)',
+              background: 'linear-gradient(90deg, #0f766e, #2563eb, #f59e0b)',
             }}
             initial={{ width: 0 }}
             animate={{ width: `${percent}%` }}
@@ -56,7 +56,7 @@ export default function ProgressBar({ percent }: ProgressBarProps) {
             >
               <div
                 className={`w-2 h-2 rounded-full mt-[-1px] ${
-                  percent >= stage.pct ? 'bg-yellow-400' : 'bg-white/20'
+                  percent >= stage.pct ? 'bg-teal-400' : 'bg-white/20'
                 }`}
               />
             </div>
