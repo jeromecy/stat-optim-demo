@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import FlavorCard from '@/components/ui/FlavorCard';
 import AnimatedCounter from '@/components/ui/AnimatedCounter';
@@ -22,17 +22,20 @@ export default function Round1({ onComplete }: Round1Props) {
   const [lastResult, setLastResult] = useState<DayResult | null>(null);
   const [pendingFlavor, setPendingFlavor] = useState<FlavorId | null>(null);
   // Guard against accidental click-through during page-transition animation
-  const [ready, setReady] = useState(false);
+  // useRef so the flag is set synchronously before React re-renders.
+  const readyRef = useRef(false);
+  const readyTimerRef = useRef<ReturnType<typeof setTimeout>>();
   useEffect(() => {
-    setReady(false);
-    const t = setTimeout(() => setReady(true), 550);
-    return () => clearTimeout(t);
-  }, [phase, day]);
+    readyRef.current = false;
+    clearTimeout(readyTimerRef.current);
+    readyTimerRef.current = setTimeout(() => { readyRef.current = true; }, 550);
+    return () => clearTimeout(readyTimerRef.current);
+  }, []);
 
   const totalProfit = results.reduce((s, r) => s + r.revenue, 0);
 
   const handleFlavorClick = (flavorId: FlavorId) => {
-    if (!ready) return;
+    if (!readyRef.current) return;
     const result = simulateOneDay(flavorId, day, 1);
     setPendingFlavor(flavorId);
     setLastResult(result);
@@ -41,6 +44,11 @@ export default function Round1({ onComplete }: Round1Props) {
   };
 
   const handleNextDay = () => {
+    // Reset the click guard synchronously before state update so the
+    // render that shows 'choosing' already has readyRef.current === false.
+    readyRef.current = false;
+    clearTimeout(readyTimerRef.current);
+    readyTimerRef.current = setTimeout(() => { readyRef.current = true; }, 550);
     if (day >= TOTAL_DAYS) {
       setPhase('summary');
     } else {

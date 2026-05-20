@@ -32,6 +32,8 @@ export default function Round4({ customerData, onComplete }: Round4Props) {
   const [results, setResults] = useState<DayResult[]>([]);
   const [visibleResults, setVisibleResults] = useState<DayResult[]>([]);
   const animRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const readyRef = useRef(false);
+  useEffect(() => { const t = setTimeout(() => { readyRef.current = true; }, 600); return () => clearTimeout(t); }, []);
 
   const expectedDaily =
     (1 - explorationPct / 100) * OPTIMAL_DAILY +
@@ -40,6 +42,7 @@ export default function Round4({ customerData, onComplete }: Round4Props) {
   const expectedTotal = Math.round(expectedDaily * TOTAL_DAYS);
 
   const handleRun = () => {
+    if (!readyRef.current) return;
     const simResults = simulateEpsilonGreedy(TOTAL_DAYS, explorationPct, customerData);
     setResults(simResults);
     setVisibleResults([]);

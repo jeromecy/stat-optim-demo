@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   BarChart,
@@ -26,6 +26,8 @@ export default function Round3({ customerData, onComplete }: Round3Props) {
   const [phase, setPhase] = useState<Phase>('quiz');
   const [guess, setGuess] = useState<FlavorId | null>(null);
   const [confirmed, setConfirmed] = useState(false);
+  const readyRef = useRef(false);
+  useEffect(() => { const t = setTimeout(() => { readyRef.current = true; }, 600); return () => clearTimeout(t); }, []);
 
   const correctAnswer = getMostPopularFlavor(customerData);
   const isCorrect = guess === correctAnswer;
@@ -44,7 +46,7 @@ export default function Round3({ customerData, onComplete }: Round3Props) {
   const maxCount = Math.max(...chartData.map((d) => d.count), 1);
 
   const handleGuess = (flavorId: FlavorId) => {
-    if (confirmed) return;
+    if (!readyRef.current || confirmed) return;
     setGuess(flavorId);
   };
 
