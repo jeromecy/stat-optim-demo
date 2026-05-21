@@ -9,6 +9,7 @@ import Round3 from '@/components/game/Round3';
 import Round4 from '@/components/game/Round4';
 import FinalResults from '@/components/game/FinalResults';
 import RealWorldCTA from '@/components/game/RealWorldCTA';
+import FutureCareers from '@/components/game/FutureCareers';
 import ProgressBar from '@/components/ui/ProgressBar';
 import ScoreDisplay from '@/components/ui/ScoreDisplay';
 import { getProgressPercent } from '@/lib/gameLogic';
@@ -22,6 +23,7 @@ const NAV_ITEMS: { screen: Screen; icon: string; label: string }[] = [
   { screen: 'round4',   icon: '🗺️', label: 'R4: Spatial' },
   { screen: 'final',    icon: '🏆', label: 'Results'     },
   { screen: 'realworld',icon: '🌏', label: 'Real World'  },
+  { screen: 'futures',  icon: '🚀', label: 'Futures'     },
 ];
 
 interface GameState {
@@ -113,6 +115,10 @@ export default function GamePage() {
     setState((s) => ({ ...s, screen: 'realworld' }));
   }, []);
 
+  const handleGoToFutures = useCallback(() => {
+    setState((s) => ({ ...s, screen: 'futures' }));
+  }, []);
+
   const handleRestart = useCallback(() => {
     setState(INITIAL_STATE);
   }, []);
@@ -140,6 +146,7 @@ export default function GamePage() {
           <ProgressBar percent={progress} screen={screen} />
           {/* Navigation chips */}
           <div className="flex justify-center gap-1 px-3 py-1.5 overflow-x-auto scrollbar-none">
+            <div className="flex gap-1 max-w-5xl w-full justify-center">
             {NAV_ITEMS.map((item) => (
               <button
                 key={item.screen}
@@ -155,6 +162,7 @@ export default function GamePage() {
                 <span className="hidden sm:inline">{item.label}</span>
               </button>
             ))}
+            </div>
           </div>
           <ScoreDisplay round1Profit={state.round1Profit} round2Profit={state.round2Profit} />
         </motion.div>
@@ -207,7 +215,13 @@ export default function GamePage() {
 
         {screen === 'realworld' && (
           <motion.div key="realworld" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={pageTransition}>
-            <RealWorldCTA onRestart={handleRestart} />
+            <RealWorldCTA onRestart={handleRestart} onNext={handleGoToFutures} />
+          </motion.div>
+        )}
+
+        {screen === 'futures' && (
+          <motion.div key="futures" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={pageTransition}>
+            <FutureCareers onRestart={handleRestart} />
           </motion.div>
         )}
       </AnimatePresence>

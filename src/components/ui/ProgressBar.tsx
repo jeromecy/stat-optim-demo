@@ -20,7 +20,7 @@ const STAGES = [
 export default function ProgressBar({ percent }: ProgressBarProps) {
   return (
     <div className="w-full px-4 py-3">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl lg:max-w-5xl mx-auto">
         <div className="flex justify-between text-xs text-white/50 mb-1 font-semibold">
           <span>Progress</span>
           <span>{Math.round(percent)}%</span>

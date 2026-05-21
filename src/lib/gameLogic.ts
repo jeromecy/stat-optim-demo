@@ -288,6 +288,7 @@ export function getProgressPercent(screen: string): number {
     round4: 78,
     final: 92,
     realworld: 100,
+    futures: 100,
   };
   return map[screen] ?? 0;
 }

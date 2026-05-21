@@ -152,25 +152,19 @@ export default function FinalResults({ round1Profit, round2Profit, score, onRest
   const profitDiff = round2Profit - round1Profit;
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
+    <div className="max-w-2xl lg:max-w-5xl mx-auto px-4 py-6 space-y-6">
 
       {/* Header */}
       <motion.div className="text-center" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="text-6xl mb-2">🎉</div>
         <h2 className="text-3xl font-black text-[#001E62] mb-1">Journey Complete!</h2>
         <p className="text-[#001E62]/65 text-sm">You explored 4 layers of data science — from random guessing to spatial optimisation.</p>
-        {score > 0 && (
-          <div className="inline-flex items-center gap-2 mt-3 px-5 py-2 rounded-full font-black text-xl"
-            style={{ background: 'rgba(232,160,0,0.12)', border: '1px solid rgba(232,160,0,0.35)', color: '#b45309' }}>
-            🏆 Total score: ${score.toLocaleString()}
-          </div>
-        )}
       </motion.div>
 
       {/* Round Journey 2×2 */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
         <h3 className="text-[#001E62] font-black text-sm mb-3 text-center uppercase tracking-wide">The 4-Round Journey</h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {ROUND_JOURNEY.map((r) => (
             <div key={r.round} className="rounded-xl p-3" style={{ background: r.bg, border: `1px solid ${r.border}` }}>
               <div className="flex items-center gap-2 mb-1.5">
@@ -227,7 +221,7 @@ export default function FinalResults({ round1Profit, round2Profit, score, onRest
       {/* The Maths Behind It */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
         <h3 className="text-[#001E62] font-black text-sm mb-3 text-center uppercase tracking-wide">The Maths That Powered This</h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {TECHNIQUE_CARDS.map((t) => (
             <div key={t.title} className="rounded-xl p-3" style={{ background: t.bg, border: `1px solid ${t.border}` }}>
               <t.Visual />
@@ -259,7 +253,7 @@ export default function FinalResults({ round1Profit, round2Profit, score, onRest
       {/* Industries */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }}>
         <h3 className="text-[#001E62] font-black text-sm mb-3 text-center uppercase tracking-wide">Who Uses This Every Day</h3>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 lg:grid-cols-6 gap-2">
           {[
             { icon: '🏥', name: 'Healthcare',    detail: 'Trial design & allocation' },
             { icon: '✈️', name: 'Aviation',      detail: 'Route & crew scheduling'  },

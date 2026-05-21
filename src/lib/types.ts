@@ -39,7 +39,8 @@ export type Screen =
   | 'round3'
   | 'round4'
   | 'final'
-  | 'realworld';
+  | 'realworld'
+  | 'futures';
 
 export interface Round1Data {
   allocation: Record<FlavorId, number>;

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 
 interface RealWorldCTAProps {
   onRestart: () => void;
+  onNext?: () => void;
 }
 
 const EXAMPLES = [
@@ -20,7 +21,7 @@ const EXAMPLES = [
   },
   {
     icon: '🚗',
-    company: 'Uber & Lyft',
+    company: 'Uber & Doordash',
     title: 'Surge Pricing',
     description:
       "Real-time demand statistics power dynamic pricing algorithms that balance supply and demand — optimising revenue while keeping riders moving.",
@@ -70,11 +71,11 @@ const EXAMPLES = [
   },
 ];
 
-export default function RealWorldCTA({ onRestart }: RealWorldCTAProps) {
+export default function RealWorldCTA({ onRestart, onNext }: RealWorldCTAProps) {
   const [expanded, setExpanded] = useState<number | null>(null);
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6">
+    <div className="max-w-2xl lg:max-w-5xl mx-auto px-4 py-6">
       {/* Header */}
       <motion.div
         className="text-center mb-6"
@@ -100,7 +101,7 @@ export default function RealWorldCTA({ onRestart }: RealWorldCTAProps) {
       </motion.div>
 
       {/* Example cards */}
-      <div className="grid grid-cols-1 gap-3 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
         {EXAMPLES.map((ex, i) => (
           <motion.div
             key={i}
@@ -160,17 +161,22 @@ export default function RealWorldCTA({ onRestart }: RealWorldCTAProps) {
         ))}
       </div>
 
-      {/* Restart */}
+      {/* Actions */}
       <motion.div
-        className="text-center"
+        className="text-center space-y-3"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
       >
+        {onNext && (
+          <button className="btn-primary w-full justify-center" onClick={onNext}>
+            🚀 Future Careers &amp; AI →
+          </button>
+        )}
         <button className="btn-secondary" onClick={onRestart}>
           🔄 Play Again
         </button>
-        <p className="text-[#001E62]/40 text-xs mt-3">
+        <p className="text-[#001E62]/40 text-xs mt-1">
           Share this game with friends! stat-optim-demo.netlify.app
         </p>
       </motion.div>

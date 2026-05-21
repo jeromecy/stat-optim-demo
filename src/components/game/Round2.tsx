@@ -65,7 +65,7 @@ export default function Round2({ round1Profit, onComplete }: Round2Props) {
   const profitDiff = totalProfit - round1Profit;
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6">
+    <div className="max-w-2xl lg:max-w-4xl mx-auto px-4 py-6">
       <motion.div className="text-center mb-6" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
         <div
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-3 text-sm font-bold"
