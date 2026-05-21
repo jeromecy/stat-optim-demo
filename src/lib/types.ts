@@ -72,4 +72,6 @@ export interface Round4Data {
   allocation: Record<string, number>;
   results: RegionAllocationResult[];
   totalProfit: number;
+  selectedHubId?: string;
+  selectedHubName?: string;
 }

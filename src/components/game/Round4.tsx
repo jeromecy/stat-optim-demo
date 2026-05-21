@@ -311,7 +311,13 @@ export default function Round4({ onComplete }: Round4Props) {
 
         <button
           className="btn-primary w-full justify-center"
-          onClick={() => onComplete({ allocation: {}, results: [], totalProfit: yourProfit })}
+          onClick={() => onComplete({
+            allocation: {},
+            results: [],
+            totalProfit: yourProfit,
+            selectedHubId: selected?.id,
+            selectedHubName: selected?.name,
+          })}
         >
           See Final Results →
         </button>

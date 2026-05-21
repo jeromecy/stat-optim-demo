@@ -6,10 +6,47 @@ interface FinalResultsProps {
   round1Profit: number;
   round2Profit: number;
   round3Profit: number;
+  round3Intensity: number;
   round4Profit: number;
+  round4HubName: string;
   score: number;
   onRestart: () => void;
   onContinue: () => void;
+}
+
+const ROUND3_DEMAND = [400, 384, 336, 288, 240, 218, 208, 230, 262, 304, 352, 410];
+const ROUND3_PRICE = 3;
+const ROUND3_UNIT_COST = 1;
+const ROUND3_WASTE = 0.5;
+
+function calcRound3Profit(intensity: number): number {
+  const flat = ROUND3_DEMAND.reduce((s, d) => s + d, 0) / 12;
+  return Math.round(
+    ROUND3_DEMAND.reduce((sum, demand) => {
+      const alloc = flat * (1 - intensity) + demand * intensity;
+      const sold = Math.min(alloc, demand);
+      const waste = Math.max(0, alloc - demand);
+      return sum + sold * ROUND3_PRICE - alloc * ROUND3_UNIT_COST - waste * ROUND3_WASTE;
+    }, 0)
+  );
+}
+
+const ROUND4_DEMAND_BY_REGION = { NSW: 320, VIC: 260, QLD: 200, WA: 110, SA: 70, TAS: 25, ACT: 10, NT: 5 } as const;
+const ROUND4_BASE_MARGIN = 2.5;
+
+const ROUND4_HUB_COSTS = {
+  Sydney:    { NSW: 0.50, VIC: 0.70, QLD: 0.85, WA: 1.40, SA: 0.90, TAS: 1.10, ACT: 0.55, NT: 1.45 },
+  Melbourne: { NSW: 0.72, VIC: 0.50, QLD: 0.98, WA: 1.35, SA: 0.78, TAS: 0.70, ACT: 0.68, NT: 1.42 },
+  Perth:     { NSW: 1.50, VIC: 1.40, QLD: 1.45, WA: 0.50, SA: 0.92, TAS: 1.45, ACT: 1.48, NT: 1.15 },
+  Darwin:    { NSW: 1.48, VIC: 1.45, QLD: 1.20, WA: 1.15, SA: 1.30, TAS: 1.50, ACT: 1.45, NT: 0.50 },
+} as const;
+
+function calcRound4ProfitForHub(hub: keyof typeof ROUND4_HUB_COSTS): number {
+  const costs = ROUND4_HUB_COSTS[hub];
+  return Math.round(
+    (Object.keys(ROUND4_DEMAND_BY_REGION) as Array<keyof typeof ROUND4_DEMAND_BY_REGION>)
+      .reduce((sum, key) => sum + ROUND4_DEMAND_BY_REGION[key] * (ROUND4_BASE_MARGIN - costs[key]), 0)
+  );
 }
 
 /* ─── Mini SVG Visuals ────────────────────────────────────────────── */
@@ -146,10 +183,37 @@ const ROUND_JOURNEY = [
 
 /* ─── Component ──────────────────────────────────────────────────── */
 
-export default function FinalResults({ round1Profit, round2Profit, score, onRestart, onContinue }: FinalResultsProps) {
+export default function FinalResults({
+  round1Profit,
+  round2Profit,
+  round3Profit,
+  round3Intensity,
+  round4Profit,
+  round4HubName,
+  score,
+  onRestart,
+  onContinue,
+}: FinalResultsProps) {
   const profitByKey: Record<string, number> = { r1: round1Profit, r2: round2Profit };
   const maxProfit = Math.max(1, round1Profit, round2Profit);
   const profitDiff = round2Profit - round1Profit;
+
+  const round3Flat = calcRound3Profit(0);
+  const round3Best = calcRound3Profit(1);
+  const round3Gain = round3Profit - round3Flat;
+  const round3MaxGain = Math.max(1, round3Best - round3Flat);
+  const round3Efficiency = Math.max(0, Math.min(100, Math.round((round3Gain / round3MaxGain) * 100)));
+
+  const round4Best = Math.max(
+    calcRound4ProfitForHub('Sydney'),
+    calcRound4ProfitForHub('Melbourne'),
+    calcRound4ProfitForHub('Perth'),
+    calcRound4ProfitForHub('Darwin')
+  );
+  const round4Efficiency = Math.max(0, Math.min(100, Math.round((round4Profit / Math.max(1, round4Best)) * 100)));
+  const round4Gap = Math.max(0, round4Best - round4Profit);
+
+  const overallDecisionScore = Math.round((round3Efficiency + round4Efficiency) / 2);
 
   return (
     <div className="max-w-2xl lg:max-w-5xl mx-auto px-4 py-6 space-y-6">
@@ -216,6 +280,48 @@ export default function FinalResults({ round1Profit, round2Profit, score, onRest
               : `🎯 Random got lucky by $${Math.abs(profitDiff)} this run — over many runs, data wins.`}
           </p>
         )}
+      </motion.div>
+
+      {/* Round 3 & 4 normalized quality */}
+      <motion.div className="glass-card p-5" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}>
+        <h3 className="text-white font-black text-base mb-4 text-center">Decision Quality (Round 3 & Round 4)</h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+          <div className="rounded-xl p-3" style={{ background: 'rgba(14,165,233,0.12)', border: '1px solid rgba(14,165,233,0.3)' }}>
+            <p className="text-sm font-black text-cyan-900 mb-1">📅 Round 3: Seasonal Allocation</p>
+            <p className="text-sm text-[#001E62]/90 mb-2">You selected <span className="font-black text-cyan-800">{Math.round(round3Intensity * 100)}% seasonal</span>.</p>
+            <div className="h-2.5 rounded-full bg-white/15 overflow-hidden mb-2">
+              <motion.div
+                className="h-full rounded-full"
+                style={{ background: 'linear-gradient(90deg, #0ea5e9, #14b8a6)' }}
+                initial={{ width: 0 }}
+                animate={{ width: `${round3Efficiency}%` }}
+                transition={{ duration: 0.7, ease: 'easeOut' }}
+              />
+            </div>
+            <p className="text-sm text-[#001E62]/90">Captured <span className="font-black text-cyan-800">{round3Efficiency}%</span> of the available gain vs flat ordering.</p>
+          </div>
+
+          <div className="rounded-xl p-3" style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.3)' }}>
+            <p className="text-sm font-black text-indigo-900 mb-1">🗺️ Round 4: Hub Location</p>
+            <p className="text-sm text-[#001E62]/90 mb-2">You selected <span className="font-black text-indigo-800">{round4HubName}</span>.</p>
+            <div className="h-2.5 rounded-full bg-white/15 overflow-hidden mb-2">
+              <motion.div
+                className="h-full rounded-full"
+                style={{ background: 'linear-gradient(90deg, #6366f1, #3b82f6)' }}
+                initial={{ width: 0 }}
+                animate={{ width: `${round4Efficiency}%` }}
+                transition={{ duration: 0.7, ease: 'easeOut' }}
+              />
+            </div>
+            <p className="text-sm text-[#001E62]/90">Achieved <span className="font-black text-indigo-800">{round4Efficiency}%</span> of best-hub profit (gap: ${round4Gap.toLocaleString()}).</p>
+          </div>
+        </div>
+
+        <div className="rounded-xl p-3 text-center" style={{ background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.28)' }}>
+          <p className="text-sm text-white/80">Overall optimisation quality</p>
+          <p className="text-2xl font-black text-emerald-300">{overallDecisionScore}%</p>
+        </div>
       </motion.div>
 
       {/* The Maths Behind It */}

@@ -33,7 +33,9 @@ interface GameState {
   round1Profit: number;
   round2Profit: number;
   round3Profit: number;
+  round3Intensity: number;
   round4Profit: number;
+  round4HubName: string;
 }
 
 const INITIAL_STATE: GameState = {
@@ -43,7 +45,9 @@ const INITIAL_STATE: GameState = {
   round1Profit: 0,
   round2Profit: 0,
   round3Profit: 0,
+  round3Intensity: 0,
   round4Profit: 0,
+  round4HubName: 'Not selected',
 };
 
 const pageVariants = {
@@ -95,6 +99,7 @@ export default function GamePage() {
       ...s,
       screen: 'round4',
       round3Profit: data.totalProfit,
+      round3Intensity: data.reallocationIntensity,
       profit: s.profit + data.totalProfit,
       score: s.score + data.totalProfit,
     }));
@@ -106,6 +111,7 @@ export default function GamePage() {
       ...s,
       screen: 'final',
       round4Profit: earned,
+      round4HubName: data.selectedHubName ?? 'Not selected',
       profit: s.profit + earned,
       score: s.score + earned,
     }));
@@ -164,7 +170,12 @@ export default function GamePage() {
             ))}
             </div>
           </div>
-          <ScoreDisplay round1Profit={state.round1Profit} round2Profit={state.round2Profit} />
+          <ScoreDisplay
+            round1Profit={state.round1Profit}
+            round2Profit={state.round2Profit}
+            round3Intensity={state.round3Intensity}
+            round4HubName={state.round4HubName}
+          />
         </motion.div>
       )}
 
@@ -205,7 +216,9 @@ export default function GamePage() {
               round1Profit={state.round1Profit}
               round2Profit={state.round2Profit}
               round3Profit={state.round3Profit}
+              round3Intensity={state.round3Intensity}
               round4Profit={state.round4Profit}
+              round4HubName={state.round4HubName}
               score={score}
               onRestart={handleRestart}
               onContinue={handleGoToRealWorld}
