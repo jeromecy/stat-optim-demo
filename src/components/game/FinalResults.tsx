@@ -158,7 +158,7 @@ export default function FinalResults({ round1Profit, round2Profit, score, onRest
       <motion.div className="text-center" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="text-6xl mb-2">🎉</div>
         <h2 className="text-3xl font-black text-[#001E62] mb-1">Journey Complete!</h2>
-        <p className="text-[#001E62]/65 text-sm">You explored 4 layers of data science — from random guessing to spatial optimisation.</p>
+        <p className="text-[#001E62]/80 text-base leading-relaxed">You explored 4 layers of data science — from random guessing to spatial optimisation.</p>
       </motion.div>
 
       {/* Round Journey 2×2 */}
@@ -169,18 +169,18 @@ export default function FinalResults({ round1Profit, round2Profit, score, onRest
             <div key={r.round} className="rounded-xl p-3" style={{ background: r.bg, border: `1px solid ${r.border}` }}>
               <div className="flex items-center gap-2 mb-1.5">
                 <span className="text-xl">{r.icon}</span>
-                <span className="text-xs font-black px-1.5 py-0.5 rounded-full text-white" style={{ background: r.color }}>{r.round}</span>
-                <span className="text-xs font-semibold text-[#001E62]/50">{r.tech}</span>
+                <span className="text-sm font-black px-1.5 py-0.5 rounded-full text-white" style={{ background: r.color }}>{r.round}</span>
+                <span className="text-sm font-semibold text-[#001E62]/70">{r.tech}</span>
               </div>
               <p className="text-sm font-black text-[#001E62] mb-1">{r.title}</p>
-              <p className="text-xs text-[#001E62]/65 leading-snug">{r.insight}</p>
+              <p className="text-sm text-[#001E62]/80 leading-relaxed">{r.insight}</p>
               {'profitKey' in r && profitByKey[r.profitKey] > 0 && (
                 <p className="text-sm font-black mt-1.5" style={{ color: r.color }}>
                   ${profitByKey[r.profitKey]}
                 </p>
               )}
               {'badge' in r && (
-                <span className="inline-block mt-1.5 text-xs font-bold px-2 py-0.5 rounded-full"
+                <span className="inline-block mt-1.5 text-sm font-bold px-2 py-0.5 rounded-full"
                   style={{ background: `${r.color}22`, color: r.color }}>{r.badge}</span>
               )}
             </div>
@@ -226,10 +226,10 @@ export default function FinalResults({ round1Profit, round2Profit, score, onRest
             <div key={t.title} className="rounded-xl p-3" style={{ background: t.bg, border: `1px solid ${t.border}` }}>
               <t.Visual />
               <p className="font-black text-sm mt-1" style={{ color: t.color }}>{t.title}</p>
-              <p className="text-xs text-[#001E62]/50 font-semibold mb-1">{t.subtitle}</p>
-              <code className="block text-xs font-mono font-bold px-1.5 py-0.5 rounded mb-1.5 break-all"
+              <p className="text-sm text-[#001E62]/65 font-semibold mb-1">{t.subtitle}</p>
+              <code className="block text-sm font-mono font-bold px-1.5 py-0.5 rounded mb-1.5 break-all"
                 style={{ background: `${t.color}18`, color: t.color }}>{t.formula}</code>
-              <p className="text-xs text-[#001E62]/65 leading-snug">{t.desc}</p>
+              <p className="text-sm text-[#001E62]/80 leading-relaxed">{t.desc}</p>
             </div>
           ))}
         </div>
@@ -243,8 +243,8 @@ export default function FinalResults({ round1Profit, round2Profit, score, onRest
             <div key={s.stat} className="glass-card p-3 text-center">
               <div className="text-2xl mb-1">{s.icon}</div>
               <div className="text-xl font-black" style={{ color: s.color }}>{s.stat}</div>
-              <div className="text-xs font-black text-white/80 leading-tight">{s.label}</div>
-              <div className="text-xs text-white/50 mt-1 leading-tight">{s.detail}</div>
+              <div className="text-sm font-black text-white/90 leading-tight">{s.label}</div>
+              <div className="text-sm text-white/65 mt-1 leading-relaxed">{s.detail}</div>
             </div>
           ))}
         </div>
@@ -265,8 +265,8 @@ export default function FinalResults({ round1Profit, round2Profit, score, onRest
             <div key={ind.name} className="rounded-xl p-2.5 text-center"
               style={{ background: 'rgba(0,30,98,0.05)', border: '1px solid rgba(0,30,98,0.10)' }}>
               <div className="text-2xl mb-0.5">{ind.icon}</div>
-              <div className="text-xs font-black text-[#001E62]">{ind.name}</div>
-              <div className="text-xs text-[#001E62]/55 leading-tight mt-0.5">{ind.detail}</div>
+              <div className="text-sm font-black text-[#001E62]">{ind.name}</div>
+              <div className="text-sm text-[#001E62]/70 leading-relaxed mt-0.5">{ind.detail}</div>
             </div>
           ))}
         </div>
@@ -281,7 +281,7 @@ export default function FinalResults({ round1Profit, round2Profit, score, onRest
         <p className="text-[#001E62]/65 text-sm mb-3">These techniques are core to Curtin&apos;s mathematics, statistics and data science programs.</p>
         <div className="flex flex-wrap justify-center gap-2">
           {['B.Sc. Statistics', 'B.Sc. Mathematics', 'Data Science', 'Operations Research', 'Actuarial Science'].map((prog) => (
-            <span key={prog} className="text-xs font-bold px-3 py-1 rounded-full"
+            <span key={prog} className="text-sm font-bold px-3 py-1 rounded-full"
               style={{ background: 'rgba(0,30,98,0.08)', border: '1px solid rgba(0,30,98,0.15)', color: '#001E62' }}>
               {prog}
             </span>

@@ -73,7 +73,7 @@ export default function Round3({ onComplete }: Round3Props) {
           Round 3 – Time Series Analysis
         </div>
         <h2 className="text-2xl md:text-3xl font-black text-[#001E62]">Seasonal Stock Allocation</h2>
-        <p className="text-[#001E62]/70 text-sm mt-2">
+        <p className="text-[#001E62]/80 text-base mt-2 leading-relaxed">
           Demand peaks in summer — should you order the same stock every month?
         </p>
       </motion.div>
@@ -83,25 +83,25 @@ export default function Round3({ onComplete }: Round3Props) {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3">
           <div className="glass-card p-3 text-center">
-            <p className="text-white/50 text-xs mb-1">Annual Demand</p>
+            <p className="text-white/65 text-sm mb-1">Annual Demand</p>
             <p className="text-2xl font-black text-blue-300">{annualDemand.toLocaleString()}</p>
-            <p className="text-white/40 text-xs">units / year</p>
+            <p className="text-white/55 text-sm">units / year</p>
           </div>
           <div className="glass-card p-3 text-center">
-            <p className="text-white/50 text-xs mb-1">Peak Month</p>
+            <p className="text-white/65 text-sm mb-1">Peak Month</p>
             <p className="text-2xl font-black text-amber-300">{peakMonth.month}</p>
-            <p className="text-white/40 text-xs">{peakMonth.demand} units</p>
+            <p className="text-white/55 text-sm">{peakMonth.demand} units</p>
           </div>
           <div className="glass-card p-3 text-center">
-            <p className="text-white/50 text-xs mb-1">Seasonal Swing</p>
+            <p className="text-white/65 text-sm mb-1">Seasonal Swing</p>
             <p className="text-2xl font-black text-teal-300">+{swing}%</p>
-            <p className="text-white/40 text-xs">peak vs trough</p>
+            <p className="text-white/55 text-sm">peak vs trough</p>
           </div>
         </div>
 
         {/* Live chart — bars reshape as slider moves */}
         <div className="glass-card p-4">
-          <p className="text-white/55 text-xs font-bold mb-1 uppercase tracking-wide">
+          <p className="text-white/70 text-sm font-bold mb-1 uppercase tracking-wide">
             Your orders (bars) vs customer demand (line) — updates live
           </p>
           <ResponsiveContainer width="100%" height={200}>
@@ -118,7 +118,7 @@ export default function Round3({ onComplete }: Round3Props) {
               <Line dataKey="demand" name="Demand" stroke="#f59e0b" strokeWidth={2.5} dot={{ r: 3, fill: '#f59e0b', strokeWidth: 0 }} type="monotone" isAnimationActive={false} />
             </ComposedChart>
           </ResponsiveContainer>
-          <div className="flex items-center justify-center gap-5 mt-1 text-xs text-[#001E62]/55">
+          <div className="flex items-center justify-center gap-5 mt-1 text-sm text-[#001E62]/70">
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-3 h-3 rounded bg-blue-400/65"></span>Your orders
             </span>
@@ -136,11 +136,11 @@ export default function Round3({ onComplete }: Round3Props) {
           <p className="text-[#001E62] font-black text-base mb-1">
             🎯 Your call: how seasonal should your stock orders be?
           </p>
-          <p className="text-[#001E62]/55 text-xs mb-4">
+          <p className="text-[#001E62]/70 text-sm mb-4 leading-relaxed">
             Drag right to follow the seasonal curve — watch the chart and profits update live.
           </p>
 
-          <div className="flex justify-between text-xs font-bold text-[#001E62]/55 mb-1.5">
+          <div className="flex justify-between text-sm font-bold text-[#001E62]/70 mb-1.5">
             <span>📦 Flat (same every month)</span>
             <span>📈 Seasonal (match the curve)</span>
           </div>
@@ -158,7 +158,7 @@ export default function Round3({ onComplete }: Round3Props) {
               background: `linear-gradient(to right, #3b82f6 ${sliderValue}%, rgba(59,130,246,0.18) ${sliderValue}%)`,
             }}
           />
-          <div className="flex justify-between text-xs text-[#001E62]/35 mt-1 mb-4">
+          <div className="flex justify-between text-sm text-[#001E62]/50 mt-1 mb-4">
             <span>0%</span>
             <span className="font-bold text-blue-600">{sliderValue}% seasonal</span>
             <span>100%</span>

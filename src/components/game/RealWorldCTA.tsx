@@ -95,7 +95,7 @@ export default function RealWorldCTA({ onRestart, onNext }: RealWorldCTAProps) {
         <h2 className="text-2xl md:text-3xl font-black text-[#001E62] mb-2">
           <span className="gradient-text-blue">This is everywhere.</span>
         </h2>
-        <p className="text-[#001E62]/70 text-sm">
+        <p className="text-[#001E62]/80 text-base leading-relaxed">
           The same logic you just used — data → statistics → optimisation — runs the modern world.
         </p>
       </motion.div>
@@ -123,15 +123,15 @@ export default function RealWorldCTA({ onRestart, onNext }: RealWorldCTAProps) {
                 <span className="text-3xl">{ex.icon}</span>
                 <div>
                   <div className="flex items-center gap-2">
-                    <p className="font-black text-sm" style={{ color: '#001E62' }}>{ex.company}</p>
+                    <p className="font-black text-base" style={{ color: '#001E62' }}>{ex.company}</p>
                     <span
-                      className="text-xs px-2 py-0.5 rounded-full font-bold"
+                      className="text-sm px-2 py-0.5 rounded-full font-bold"
                       style={{ background: `${ex.color}25`, color: ex.color }}
                     >
                       {ex.tag}
                     </span>
                   </div>
-                  <p className="text-xs" style={{ color: 'rgba(0,30,98,0.58)' }}>{ex.title}</p>
+                  <p className="text-sm" style={{ color: 'rgba(0,30,98,0.75)' }}>{ex.title}</p>
                 </div>
               </div>
               <motion.span
@@ -151,8 +151,8 @@ export default function RealWorldCTA({ onRestart, onNext }: RealWorldCTAProps) {
               style={{ overflow: 'hidden' }}
             >
               <div
-                className="px-4 pb-4 pt-0 text-sm leading-relaxed border-t"
-                style={{ borderColor: `${ex.color}25`, color: 'rgba(0,30,98,0.70)' }}
+                className="px-4 pb-4 pt-0 text-base leading-relaxed border-t"
+                style={{ borderColor: `${ex.color}25`, color: 'rgba(0,30,98,0.80)' }}
               >
                 {ex.description}
               </div>
@@ -176,7 +176,7 @@ export default function RealWorldCTA({ onRestart, onNext }: RealWorldCTAProps) {
         <button className="btn-secondary" onClick={onRestart}>
           🔄 Play Again
         </button>
-        <p className="text-[#001E62]/40 text-xs mt-1">
+        <p className="text-[#001E62]/55 text-sm mt-1">
           Share this game with friends! stat-optim-demo.netlify.app
         </p>
       </motion.div>

@@ -74,7 +74,7 @@ export default function Round2({ round1Profit, onComplete }: Round2Props) {
           Round 2 - Data-Guided Allocation
         </div>
         <h2 className="text-2xl md:text-3xl font-black text-[#001E62]">Allocate Using Customer Data</h2>
-        <p className="text-[#001E62]/70 text-sm mt-2">Use this preference dataset, lock an allocation, and run another 5-day simulation.</p>
+        <p className="text-[#001E62]/80 text-base mt-2 leading-relaxed">Use this preference dataset, lock an allocation, and run another 5-day simulation.</p>
       </motion.div>
 
       <AnimatePresence mode="wait">
@@ -87,7 +87,7 @@ export default function Round2({ round1Profit, onComplete }: Round2Props) {
             exit={{ opacity: 0, x: -30 }}
           >
             <div className="glass-card p-4">
-              <p className="text-white/55 text-xs font-bold mb-2 uppercase tracking-wide">Observed customer preference sample</p>
+              <p className="text-white/70 text-sm font-bold mb-2 uppercase tracking-wide">Observed customer preference sample</p>
               <ResponsiveContainer width="100%" height={180}>
                 <BarChart data={demandChart}>
                   <XAxis dataKey="label" tick={{ fill: 'rgba(0,30,98,0.70)', fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -105,13 +105,13 @@ export default function Round2({ round1Profit, onComplete }: Round2Props) {
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
-              <p className="text-xs text-white/50 mt-2">Tip: Higher demand flavors should receive more scoops.</p>
+              <p className="text-sm text-white/65 mt-2">Tip: Higher demand flavors should receive more scoops.</p>
             </div>
 
             <div className="glass-card p-5">
               <div className="rounded-lg p-3 mb-4" style={{ background: 'rgba(20,184,166,0.1)', border: '1px solid rgba(20,184,166,0.3)' }}>
                 <p className="text-teal-200 text-sm font-semibold mb-1">📊 Your turn — allocate all 20 scoops based on the demand chart above.</p>
-                <p className="text-white/55 text-xs">Flavours with a higher preference share should receive more scoops. Try to match your split to the percentages.</p>
+                <p className="text-white/70 text-sm leading-relaxed">Flavours with a higher preference share should receive more scoops. Try to match your split to the percentages.</p>
               </div>
               <AllocationInput allocation={allocation} onChange={setAllocation} />
             </div>
@@ -145,11 +145,11 @@ export default function Round2({ round1Profit, onComplete }: Round2Props) {
 
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="rounded-xl p-3 text-center" style={{ background: 'rgba(15,118,110,0.12)', border: '1px solid rgba(20,184,166,0.28)' }}>
-                <p className="text-white/60 text-xs mb-1">Round 1 random</p>
+                <p className="text-white/70 text-sm mb-1">Round 1 random</p>
                 <AnimatedCounter value={round1Profit} prefix="$" className="text-xl font-black text-orange-300" />
               </div>
               <div className="rounded-xl p-3 text-center" style={{ background: 'rgba(20,184,166,0.12)', border: '1px solid rgba(20,184,166,0.28)' }}>
-                <p className="text-white/60 text-xs mb-1">Round 2 data-driven</p>
+                <p className="text-white/70 text-sm mb-1">Round 2 data-driven</p>
                 <AnimatedCounter value={totalProfit} prefix="$" className="text-xl font-black text-teal-300" />
               </div>
             </div>

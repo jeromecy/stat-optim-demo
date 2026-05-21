@@ -113,10 +113,10 @@ export default function Round4({ onComplete }: Round4Props) {
           Round 4 – Spatial Analysis
         </div>
         <h2 className="text-2xl md:text-3xl font-black text-[#001E62]">Where Should Your Hub Be?</h2>
-        <p className="text-[#001E62]/70 text-sm mt-2">
+        <p className="text-[#001E62]/80 text-base mt-2 leading-relaxed">
           Pick a distribution hub city — transport costs vary by distance. Which location maximises profit?
         </p>
-        <p className="text-xs text-amber-700/80 mt-1">Simulated data for demonstration purposes.</p>
+        <p className="text-sm text-amber-700/90 mt-1">Simulated data for demonstration purposes.</p>
       </motion.div>
 
       <motion.div className="space-y-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
@@ -152,7 +152,7 @@ export default function Round4({ onComplete }: Round4Props) {
                   )}
                   <div className="text-3xl mb-2">{hub.emoji}</div>
                   <p className="font-black text-sm text-[#001E62]">{hub.name}</p>
-                  <p className="text-xs text-[#001E62]/50 mt-0.5 leading-snug">{hub.hint}</p>
+                  <p className="text-sm text-[#001E62]/70 mt-0.5 leading-relaxed">{hub.hint}</p>
                   <AnimatePresence>
                     {isSelected && (
                       <motion.p
@@ -174,14 +174,14 @@ export default function Round4({ onComplete }: Round4Props) {
 
         {/* Map — hub marker moves on selection */}
         <div className="glass-card p-4">
-          <p className="text-white/55 text-xs font-bold mb-1 uppercase tracking-wide">
+          <p className="text-white/70 text-sm font-bold mb-1 uppercase tracking-wide">
             Australia — demand & transport costs
             {selected && <span className="text-white/40"> · Hub: {selected.name}</span>}
           </p>
           <div style={{ maxWidth: 500, margin: '0 auto' }}>
             <AustraliaMap regions={mapRegions} hubCoordinates={hubCoords} hubName={selected?.name ?? 'Sydney'} />
           </div>
-          <p className="text-xs text-white/40 mt-1 text-center">
+          <p className="text-sm text-white/60 mt-1 text-center">
             Circle size ∝ demand · Line colour: teal = cheap, red = expensive
           </p>
         </div>
@@ -199,8 +199,8 @@ export default function Round4({ onComplete }: Round4Props) {
               margin={{ left: 0, right: 36, top: 0, bottom: 0 }}
             >
               <CartesianGrid stroke="rgba(148,163,184,0.18)" strokeDasharray="3 3" horizontal={false} />
-              <XAxis type="number" tick={{ fill: 'rgba(0,30,98,0.45)', fontSize: 10 }} axisLine={false} tickLine={false} />
-              <YAxis type="category" dataKey="name" tick={{ fill: 'rgba(0,30,98,0.70)', fontSize: 11, fontWeight: 700 }} axisLine={false} tickLine={false} width={36} />
+              <XAxis type="number" tick={{ fill: 'rgba(0,30,98,0.60)', fontSize: 11 }} axisLine={false} tickLine={false} />
+              <YAxis type="category" dataKey="name" tick={{ fill: 'rgba(0,30,98,0.82)', fontSize: 12, fontWeight: 700 }} axisLine={false} tickLine={false} width={42} />
               <Tooltip
                 contentStyle={{ background: 'rgba(255,255,255,0.98)', border: '1px solid rgba(0,30,98,0.15)', borderRadius: 8 }}
                 formatter={(v: number) => [`${v} units`, 'Annual demand']}
@@ -209,7 +209,7 @@ export default function Round4({ onComplete }: Round4Props) {
                 {REGIONS.map((_, i) => (
                   <Cell key={i} fill={REGION_COLORS[i]} fillOpacity={0.80} />
                 ))}
-                <LabelList dataKey="demand" position="right" style={{ fontSize: 10, fill: 'rgba(0,30,98,0.60)', fontWeight: 600 }} />
+                <LabelList dataKey="demand" position="right" style={{ fontSize: 11, fill: 'rgba(0,30,98,0.72)', fontWeight: 700 }} />
               </Bar>
             </BarChart>
           </ResponsiveContainer>

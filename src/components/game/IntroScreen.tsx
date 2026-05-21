@@ -101,7 +101,7 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
 
         {/* Subtitle */}
         <motion.p
-          className="text-white/70 text-base mb-6 leading-relaxed"
+          className="text-white/80 text-lg mb-6 leading-relaxed"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
@@ -125,7 +125,7 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
           ].map((pill) => (
             <div
               key={pill.text}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-base font-semibold"
               style={{
                 background: 'rgba(0,30,98,0.07)',
                 border: '1px solid rgba(0,30,98,0.15)',
@@ -152,7 +152,7 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
 
         {/* Sub note */}
         <motion.p
-          className="mt-4 text-xs text-white/40"
+          className="mt-4 text-sm text-white/55"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9 }}
