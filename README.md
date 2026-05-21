@@ -1,54 +1,73 @@
 # Data to Decision 🎯
 
-An interactive, game-like web experience demonstrating how **statistics** and **optimisation** help make better decisions in the real world.
+An interactive, game-based web experience showing how **statistics** and **optimisation** drive real-world decisions.
 
-This project is designed for **Curtin Open Day**.
+Built for **Curtin Open Day， 2026**.
 
 ---
 
 ## 🚀 What is this?
 
-Instead of a traditional website, this is a **hands-on simulation** where users can:
+This is not a traditional webpage — it’s a **hands-on interactive experience**.
 
-- Make decisions in a simplified real-world scenario
-- See how outcomes change based on their choices
-- Learn how data improves decision-making
+Visitors can:
+- Make decisions in a simple real-world scenario  
+- See how outcomes change  
+- Learn how data improves decisions  
 
 Core idea:
 
-> From random guessing → data collection → statistical insight → optimisation
+> From guessing → data → insight → optimisation
 
 ---
 
-## 🎮 Main Demo
+## 🎮 The Experience
 
-The core experience is a mini interactive game:
+### 🍦 Run Your Own Ice Cream Shop
 
-**Run your own ice cream shop**
+A short interactive game where users:
 
-Users will:
-- Choose what to sell each day
-- Observe customer behaviour
-- Learn from data
-- Adjust their strategy
-- Improve revenue over time
-
----
-
-## 💡 Concepts Demonstrated
-
-- Data collection
-- Uncertainty
-- Statistical inference
-- Exploration vs exploitation
-- Decision optimisation
+- Choose what to sell  
+- Observe customer behaviour  
+- Learn from data  
+- Adjust their strategy  
+- Improve performance over time  
 
 ---
 
-## 🎯 Purpose
+## 💡 What You’ll Learn
 
-To show that statistics is not just math —  
-it is a powerful tool to solve real-world problems and make smarter decisions.
+This demo introduces key ideas from statistics and optimisation:
+
+- Data collection  
+- Uncertainty  
+- Statistical insight  
+- Exploration vs exploitation  
+- Decision optimisation  
+
+---
+
+## 🎯 Why this matters
+
+Statistics is not just mathematics —  
+it’s about **making better decisions in uncertain environments**.
+
+This experience shows how data is used in:
+- business  
+- healthcare  
+- technology  
+- everyday decision-making  
+
+---
+
+## 📱 Try it yourself
+
+🔗 Website:  
+https://stat-opt-demo.netlify.app/
+
+📷 Scan the QR code to play:
+
+![Scan to play](./stat-opt-demo-app.png)
 
 ---
 
