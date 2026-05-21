@@ -43,9 +43,10 @@ export interface MapRegion {
 interface Props {
   regions: MapRegion[];
   hubCoordinates: [number, number];
+  hubName?: string;
 }
 
-export default function AustraliaMap({ regions, hubCoordinates }: Props) {
+export default function AustraliaMap({ regions, hubCoordinates, hubName = 'Hub' }: Props) {
   const hubPt = proj(hubCoordinates);
   if (!hubPt) return null;
 
@@ -95,8 +96,8 @@ export default function AustraliaMap({ regions, hubCoordinates }: Props) {
             x2={cityPt[0]}
             y2={cityPt[1]}
             stroke={costColor(r.transportCost)}
-            strokeWidth={2}
-            strokeOpacity={0.75}
+            strokeWidth={3}
+            strokeOpacity={0.80}
             strokeDasharray={r.transportCost > 1.0 ? '10 5' : undefined}
           />
         );
@@ -110,9 +111,9 @@ export default function AustraliaMap({ regions, hubCoordinates }: Props) {
           textAnchor="start"
           x={14}
           y={5}
-          style={{ fontSize: 11, fontWeight: 700, fill: '#1e3a8a', fontFamily: 'sans-serif' }}
+          style={{ fontSize: 14, fontWeight: 700, fill: '#1e3a8a', fontFamily: 'sans-serif' }}
         >
-          Hub (Sydney)
+          Hub ({hubName})
         </text>
       </Marker>
 
@@ -125,7 +126,7 @@ export default function AustraliaMap({ regions, hubCoordinates }: Props) {
             <text
               textAnchor="middle"
               y={-(radius + 4)}
-              style={{ fontSize: 11, fontWeight: 700, fill: '#1e3a8a', fontFamily: 'sans-serif' }}
+              style={{ fontSize: 14, fontWeight: 700, fill: '#1e3a8a', fontFamily: 'sans-serif' }}
             >
               {r.key}
             </text>

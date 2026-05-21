@@ -216,7 +216,7 @@ export default function FutureCareers({ onRestart }: FutureCareersProps) {
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.2 }}
           >
-            "AI finds patterns.{' '}
+            &ldquo;AI finds patterns.{' '}
             <span
               style={{
                 background: 'linear-gradient(135deg,#6366f1,#14b8a6)',
@@ -227,7 +227,7 @@ export default function FutureCareers({ onRestart }: FutureCareersProps) {
             >
               Humans decide what they mean.
             </span>
-            "
+            &rdquo;
           </motion.div>
         </div>
       </FadeUp>
@@ -268,7 +268,7 @@ export default function FutureCareers({ onRestart }: FutureCareersProps) {
               ))}
             </ul>
             <p className="text-[#001E62]/55 text-xs mt-3 italic">
-              That's exactly what professionals do.
+              That&apos;s exactly what professionals do.
             </p>
           </motion.div>
         </div>
@@ -324,10 +324,10 @@ export default function FutureCareers({ onRestart }: FutureCareersProps) {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              "People who understand data will{' '}
+              &ldquo;People who understand data will{' '}
               <span className="gradient-text-blue">design AI.</span>
               <br />
-              People who don't will just use it."
+              People who don&apos;t will just use it.&rdquo;
             </motion.div>
           </div>
         </div>
@@ -347,7 +347,7 @@ export default function FutureCareers({ onRestart }: FutureCareersProps) {
             transition={{ duration: 0.5 }}
           >
             <p className="text-2xl md:text-3xl font-black text-[#001E62] leading-snug mb-2">
-              You didn't just play a game.
+              You didn&apos;t just play a game.
             </p>
             <p className="text-2xl md:text-3xl font-black leading-snug">
               <span className="gradient-text-blue">You thought like a data scientist.</span>

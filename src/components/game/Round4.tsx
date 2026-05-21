@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid, Cell, LabelList } from 'recharts';
 import type { Round4Data } from '@/lib/types';
 
 const AustraliaMap = dynamic(() => import('./AustraliaMap'), {
@@ -178,10 +178,41 @@ export default function Round4({ onComplete }: Round4Props) {
             Australia — demand & transport costs
             {selected && <span className="text-white/40"> · Hub: {selected.name}</span>}
           </p>
-          <AustraliaMap regions={mapRegions} hubCoordinates={hubCoords} />
+          <div style={{ maxWidth: 500, margin: '0 auto' }}>
+            <AustraliaMap regions={mapRegions} hubCoordinates={hubCoords} hubName={selected?.name ?? 'Sydney'} />
+          </div>
           <p className="text-xs text-white/40 mt-1 text-center">
             Circle size ∝ demand · Line colour: teal = cheap, red = expensive
           </p>
+        </div>
+
+        {/* Demand by region — always visible */}
+        <div
+          className="rounded-2xl p-4"
+          style={{ background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(0,30,98,0.12)' }}
+        >
+          <p className="text-[#001E62] font-black text-sm mb-3">📊 Annual demand by state (units)</p>
+          <ResponsiveContainer width="100%" height={230}>
+            <BarChart
+              data={REGIONS.map((r, i) => ({ name: r.key, demand: r.demand, color: REGION_COLORS[i] }))}
+              layout="vertical"
+              margin={{ left: 0, right: 36, top: 0, bottom: 0 }}
+            >
+              <CartesianGrid stroke="rgba(148,163,184,0.18)" strokeDasharray="3 3" horizontal={false} />
+              <XAxis type="number" tick={{ fill: 'rgba(0,30,98,0.45)', fontSize: 10 }} axisLine={false} tickLine={false} />
+              <YAxis type="category" dataKey="name" tick={{ fill: 'rgba(0,30,98,0.70)', fontSize: 11, fontWeight: 700 }} axisLine={false} tickLine={false} width={36} />
+              <Tooltip
+                contentStyle={{ background: 'rgba(255,255,255,0.98)', border: '1px solid rgba(0,30,98,0.15)', borderRadius: 8 }}
+                formatter={(v: number) => [`${v} units`, 'Annual demand']}
+              />
+              <Bar dataKey="demand" radius={[0, 4, 4, 0]}>
+                {REGIONS.map((_, i) => (
+                  <Cell key={i} fill={REGION_COLORS[i]} fillOpacity={0.80} />
+                ))}
+                <LabelList dataKey="demand" position="right" style={{ fontSize: 10, fill: 'rgba(0,30,98,0.60)', fontWeight: 600 }} />
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
 
         {/* Results — appear after selection */}
