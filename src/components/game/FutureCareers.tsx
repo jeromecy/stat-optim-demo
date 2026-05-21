@@ -372,6 +372,15 @@ export default function FutureCareers({ onRestart }: FutureCareersProps) {
             🎓 Explore Curtin University
           </a>
 
+          <a
+            href="https://www.curtin.edu.au/about/learning-teaching/science-engineering/school-of-electrical-engineering-computing-and-mathematical-sciences/our-people/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-secondary block"
+          >
+            👥 Meet Our People (EECMS)
+          </a>
+
           <p className="text-[#001E62]/35 text-xs pt-1">
             Learn this at Curtin University
           </p>

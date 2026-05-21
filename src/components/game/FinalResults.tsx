@@ -385,6 +385,9 @@ export default function FinalResults({
         <div className="text-3xl mb-2">🎓</div>
         <p className="font-black text-[#001E62] text-base mb-1">Study This at Curtin University</p>
         <p className="text-[#001E62]/65 text-sm mb-3">These techniques are core to Curtin&apos;s mathematics, statistics and data science programs.</p>
+        <p className="text-[#001E62]/80 text-sm mb-3 font-semibold leading-relaxed">
+          Grounded in Curtin&apos;s Statistics and Industrial Optimisation discipline within the School of Electrical Engineering, Computing and Mathematical Sciences (EECMS).
+        </p>
         <div className="flex flex-wrap justify-center gap-2">
           {['B.Sc. Statistics', 'B.Sc. Mathematics', 'Data Science', 'Operations Research', 'Actuarial Science'].map((prog) => (
             <span key={prog} className="text-sm font-bold px-3 py-1 rounded-full"
@@ -400,6 +403,14 @@ export default function FinalResults({
         <button className="btn-primary w-full justify-center text-lg" onClick={onContinue}>
           See Real-World Examples 🌏
         </button>
+        <a
+          href="https://www.curtin.edu.au/about/learning-teaching/science-engineering/school-of-electrical-engineering-computing-and-mathematical-sciences/our-people/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-secondary w-full text-center"
+        >
+          Meet Our People (EECMS)
+        </a>
         <button className="btn-secondary w-full text-center" onClick={onRestart}>
           Play Again
         </button>

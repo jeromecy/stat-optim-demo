@@ -111,6 +111,24 @@ export default function IntroScreen({ onStart }: IntroScreenProps) {
           <span className="text-sky-700 font-bold">optimisation</span> help you earn more!
         </motion.p>
 
+        <motion.div
+          className="mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.55 }}
+        >
+          <p
+            className="inline-block px-3 py-2 rounded-xl text-sm md:text-base font-black leading-relaxed"
+            style={{
+              color: '#001E62',
+              background: 'rgba(232,160,0,0.14)',
+              border: '1px solid rgba(232,160,0,0.45)',
+            }}
+          >
+            Statistics and Industrial Optimisation · School of Electrical Engineering, Computing and Mathematical Sciences (EECMS)
+          </p>
+        </motion.div>
+
         {/* Feature pills */}
         <motion.div
           className="flex flex-wrap justify-center gap-2 mb-8"
